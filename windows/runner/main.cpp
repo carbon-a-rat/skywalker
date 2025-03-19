@@ -27,7 +27,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   FlutterWindow window(project);
   Win32Window::Point origin(10, 10);
   Win32Window::Size size(1280, 720);
+<<<<<<< HEAD
   if (!window.Create(L"skywalker", origin, size)) {
+=======
+  if (!window.Create(L"sky_walker", origin, size)) {
+>>>>>>> 19261a8 (Add initial project files and configurations for Flutter application)
     return EXIT_FAILURE;
   }
   window.SetQuitOnClose(true);

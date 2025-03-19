@@ -90,12 +90,21 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
+<<<<<<< HEAD
             VALUE "FileDescription", "skywalker" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "skywalker" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2025 com.example. All rights reserved." "\0"
             VALUE "OriginalFilename", "skywalker.exe" "\0"
             VALUE "ProductName", "skywalker" "\0"
+=======
+            VALUE "FileDescription", "sky_walker" "\0"
+            VALUE "FileVersion", VERSION_AS_STRING "\0"
+            VALUE "InternalName", "sky_walker" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2025 com.example. All rights reserved." "\0"
+            VALUE "OriginalFilename", "sky_walker.exe" "\0"
+            VALUE "ProductName", "sky_walker" "\0"
+>>>>>>> 19261a8 (Add initial project files and configurations for Flutter application)
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

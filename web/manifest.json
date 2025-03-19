@@ -1,6 +1,11 @@
 {
+<<<<<<< HEAD
     "name": "skywalker",
     "short_name": "skywalker",
+=======
+    "name": "sky_walker",
+    "short_name": "sky_walker",
+>>>>>>> 19261a8 (Add initial project files and configurations for Flutter application)
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
