@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-# skywalker
-=======
 # sky_walker
->>>>>>> 19261a8 (Add initial project files and configurations for Flutter application)
 
 A new Flutter project.
 

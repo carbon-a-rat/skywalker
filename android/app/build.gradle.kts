@@ -6,11 +6,7 @@ plugins {
 }
 
 android {
-<<<<<<< HEAD
     namespace = "com.example.skywalker"
-=======
-    namespace = "com.example.sky_walker"
->>>>>>> 19261a8 (Add initial project files and configurations for Flutter application)
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -25,11 +21,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-<<<<<<< HEAD
         applicationId = "com.example.skywalker"
-=======
-        applicationId = "com.example.sky_walker"
->>>>>>> 19261a8 (Add initial project files and configurations for Flutter application)
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
