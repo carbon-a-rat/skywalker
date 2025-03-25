@@ -15,8 +15,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Sky Walker',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
+        useMaterial3: true,
       ),
       home: const MyHomePage(),
     );
@@ -32,30 +34,22 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   var selectedIndex = 0;
+  final List<NavigationItem> navigationItems = [
+    NavigationItem(icon: Icons.rocket_launch, label: 'Launchers'),
+    NavigationItem(icon: Icons.data_thresholding, label: 'Data Analysis'),
+    NavigationItem(icon: Icons.settings, label: 'Settings'),
+  ];
 
   @override
   Widget build(BuildContext context) {
     // Define a shared list of navigation items
-    final List<NavigationItem> navigationItems = [
-      NavigationItem(icon: Icons.rocket_launch, label: 'Launchers'),
-      NavigationItem(icon: Icons.data_thresholding, label: 'Data Analysis'),
-      NavigationItem(icon: Icons.settings, label: 'Settings'),
-    ]; // TODO: Move this outside of the build method for better performance (once the list is finalized)
 
-    Widget page;
-    switch (selectedIndex) {
-      case 0:
-        page = LauncherListPage();
-        break;
-      case 1:
-        page = DataVisualizationPage();
-        break;
-      case 2:
-        page = SettingsPage();
-        break;
-      default:
-        throw UnimplementedError('no widget for $selectedIndex');
-    }
+    var page =
+        <Widget>[
+          LauncherListPage(), // 0
+          DataVisualizationPage(), // 1
+          SettingsPage(), // 2
+        ][selectedIndex];
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -67,6 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 SafeArea(
                   child: NavigationRail(
                     extended: false,
+
                     destinations:
                         navigationItems
                             .map(
@@ -87,24 +82,17 @@ class _MyHomePageState extends State<MyHomePage> {
                     },
                   ),
                 ),
-                Expanded(
-                  child: Container(
-                    color: Theme.of(context).colorScheme.primaryContainer,
-                    child: page,
-                  ),
-                ),
+                Expanded(child: Container(child: page)),
               ],
             ),
           );
         } else {
           // Use BottomNavigationBar for narrower screens
           return Scaffold(
-            body: Container(
-              color: Theme.of(context).colorScheme.primaryContainer,
-              child: page,
-            ),
+            body: Container(child: page),
             bottomNavigationBar: BottomNavigationBar(
               currentIndex: selectedIndex,
+
               onTap: (value) {
                 setState(() {
                   selectedIndex = value;
