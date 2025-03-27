@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:skywalker/pages/launcher_list.dart';
 import 'package:skywalker/pages/data_visualization.dart';
 import 'package:skywalker/pages/settings.dart';
+import 'package:skywalker/server/pocketbase_controller.dart';
+import 'package:skywalker/services.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await setupServiceLocators();
+
+  await getIt.allReady();
+
   runApp(const MyApp());
 }
 
