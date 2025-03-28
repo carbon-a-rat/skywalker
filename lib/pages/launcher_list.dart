@@ -68,47 +68,50 @@ class LauncherListPage extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(32.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    launcher['name'],
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-
-                  const SizedBox(height: 8),
-                  status_chip(context, launcher['status']),
-
-                  const SizedBox(height: 16),
-                  Text(
-                    'Manufacturer: ${launcher['manufacturer']}',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  Text(
-                    'Last Launch: ${launcher['lastLaunch']}',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  const SizedBox(height: 16),
-                  if (launcher['status'] == 'Available')
-                    ElevatedButton(
-                      onPressed: () {
-                        // Handle connect action
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            Theme.of(
-                              context,
-                            ).colorScheme.primary, // Primary color
-                        foregroundColor:
-                            Theme.of(context)
-                                .colorScheme
-                                .onPrimary, // Contrast color for primary
-                      ),
-                      child: const Text('Connect'),
+            Container(
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      launcher['name'],
+                      style: Theme.of(context).textTheme.headlineMedium,
                     ),
-                ],
+
+                    const SizedBox(height: 8),
+                    status_chip(context, launcher['status']),
+
+                    const SizedBox(height: 16),
+                    Text(
+                      'Manufacturer: ${launcher['manufacturer']}',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    Text(
+                      'Last Launch: ${launcher['lastLaunch']}',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    const SizedBox(height: 16),
+                    if (launcher['status'] == 'Available')
+                      ElevatedButton(
+                        onPressed: () {
+                          // Handle connect action
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              Theme.of(
+                                context,
+                              ).colorScheme.primary, // Primary color
+                          foregroundColor:
+                              Theme.of(context)
+                                  .colorScheme
+                                  .onPrimary, // Contrast color for primary
+                        ),
+                        child: const Text('Connect'),
+                      ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -126,7 +129,7 @@ class LauncherListPage extends StatelessWidget {
           height: 450, // Adjust height for the carousel
           child: PageView.builder(
             controller: PageController(
-              viewportFraction: 0.8,
+              viewportFraction: 0.9,
             ), // Perspective effect
             itemCount: launchers.length,
             itemBuilder: (context, index) {
