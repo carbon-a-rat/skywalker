@@ -159,8 +159,33 @@ class LauncherListPage extends StatelessWidget {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildWideLayout(BuildContext context) {
+    return SizedBox(
+      height: 450,
+      child: Row(
+        // Use Row instead of Column for horizontal scrolling
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+            // Ensure ListView.builder takes available space
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (BuildContext context, int index) {
+                return SizedBox(
+                  height: 450,
+                  width: 350,
+                  child: launcher_elt(context, index),
+                );
+              },
+              itemCount: launchers.length,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNarrowLayout(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -177,6 +202,19 @@ class LauncherListPage extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth >= 600) {
+          return _buildWideLayout(context);
+        } else {
+          return _buildNarrowLayout(context);
+        }
+      },
     );
   }
 }
