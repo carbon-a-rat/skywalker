@@ -4,6 +4,7 @@ import 'package:skywalker/pages/data_visualization.dart';
 import 'package:skywalker/pages/settings.dart';
 import 'package:skywalker/server/pocketbase_controller.dart';
 import 'package:skywalker/services.dart';
+import 'package:skywalker/utils.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -60,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (constraints.maxWidth >= 600) {
+        if (isDesktopLayout(context)) {
           // Use NavigationRail for wider screens
           return Scaffold(
             body: Row(

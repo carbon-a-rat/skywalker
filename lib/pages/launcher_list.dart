@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skywalker/components/colored_chip.dart';
+import 'package:skywalker/utils.dart';
 
 class LauncherListPage extends StatelessWidget {
   final List<Map<String, dynamic>> launchers = [
@@ -209,7 +210,7 @@ class LauncherListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (constraints.maxWidth >= 600) {
+        if (isDesktopLayout(context)) {
           return _buildWideLayout(context);
         } else {
           return _buildNarrowLayout(context);
