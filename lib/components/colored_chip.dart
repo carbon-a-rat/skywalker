@@ -38,7 +38,10 @@ class _ColoredChipButton extends State<ColoredChipButton> {
         widget.name,
         style: TextStyle(
           color: widget.highlighted ? Colors.white : Colors.black,
-          fontSize: 12,
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+          fontFamily: 'Poppins',
+          letterSpacing: 0.5,
         ),
       ),
     );
