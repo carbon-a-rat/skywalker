@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skywalker/components/colored_chip.dart';
+import 'package:skywalker/components/pad.dart';
 import 'package:skywalker/components/waiting_component.dart';
 import 'package:skywalker/server/launcher.dart';
 import 'package:skywalker/server/pocketbase_controller.dart';
@@ -15,26 +16,7 @@ class LauncherListPage extends StatefulWidget {
 
 class _LauncherListpage extends State<LauncherListPage> {
   var loading = true;
-  List<Launcher> launchers = [
-    Launcher(
-      name: 'Falcon 9',
-      manufacturer: 'SpaceX',
-      status: 'Available',
-      lastLaunch: 'March 10, 2025',
-    ),
-    Launcher(
-      name: 'Electron',
-      manufacturer: 'Rocket Lab',
-      status: 'Busy',
-      lastLaunch: 'March 5, 2025',
-    ),
-    Launcher(
-      name: 'New Shepard',
-      manufacturer: 'Blue Origin',
-      status: 'Offline',
-      lastLaunch: 'February 20, 2025',
-    ),
-  ];
+  List<Launcher> launchers = [];
 
   Widget status_chip(BuildContext context, String status) {
     final statusColors = {
@@ -46,6 +28,23 @@ class _LauncherListpage extends State<LauncherListPage> {
       name: status,
       color: statusColors[status] ?? Colors.grey.shade400,
       callback: () {},
+    );
+  }
+
+  Widget launcher_description(String title, String value) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: Theme.of(
+            context,
+          ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
+        ),
+        Expanded(
+          child: Text(value, style: Theme.of(context).textTheme.bodyLarge),
+        ),
+      ],
     );
   }
 
@@ -79,62 +78,35 @@ class _LauncherListpage extends State<LauncherListPage> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0,
-                    vertical: 20.0,
-                  ),
-                  child: Column(
+                padbig(
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Launcher name
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            launcher.name,
-                            style: Theme.of(context).textTheme.headlineSmall
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
+                      pady(
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              launcher.name,
+                              style: Theme.of(context).textTheme.headlineSmall
+                                  ?.copyWith(fontWeight: FontWeight.bold),
+                            ),
 
-                          // Status chip
-                          status_chip(context, launcher.status),
-                        ],
+                            // Status chip
+                            status_chip(context, launcher.status),
+                          ],
+                        ),
                       ),
-                      const SizedBox(height: 16),
-                      // Manufacturer and last launch
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Manufacturer: ',
-                            style: Theme.of(context).textTheme.bodyLarge
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                          Expanded(
-                            child: Text(
-                              launcher.manufacturer,
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                          ),
-                        ],
+
+                      launcher_description(
+                        'Manufacturer: ',
+                        launcher.manufacturer,
                       ),
-                      const SizedBox(height: 4),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Last Launch: ',
-                            style: Theme.of(context).textTheme.bodyLarge
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                          Expanded(
-                            child: Text(
-                              launcher.lastLaunch,
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                          ),
-                        ],
+
+                      launcher_description(
+                        'Last Launch: ',
+                        launcher.lastLaunch,
                       ),
                     ],
                   ),
@@ -142,10 +114,9 @@ class _LauncherListpage extends State<LauncherListPage> {
               ],
             ),
             if (launcher.status == 'Available')
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+              padbig(
+                Align(
+                  alignment: Alignment.bottomRight,
                   child: ElevatedButton(
                     onPressed: () {
                       // Handle connect action
@@ -184,7 +155,7 @@ class _LauncherListpage extends State<LauncherListPage> {
               itemBuilder: (BuildContext context, int index) {
                 return SizedBox(
                   height: 450,
-                  width: 350,
+                  width: 450,
                   child: launcher_elt(context, index),
                 );
               },
@@ -223,6 +194,7 @@ class _LauncherListpage extends State<LauncherListPage> {
     return waitFor(
       waiting_for: () => pbc.get_rocket_list(),
       executed: (data) {
+        launchers = data;
         return LayoutBuilder(
           builder: (context, constraints) {
             if (isDesktopLayout(context)) {
