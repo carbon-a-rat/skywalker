@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:skywalker/components/colored_chip.dart';
+import 'package:skywalker/components/waiting_component.dart';
 import 'package:skywalker/server/launcher.dart';
+import 'package:skywalker/server/pocketbase_controller.dart';
+import 'package:skywalker/services.dart';
 import 'package:skywalker/utils.dart';
 
-class LauncherListPage extends StatelessWidget {
-  final List<Launcher> launchers = [
+class LauncherListPage extends StatefulWidget {
+  const LauncherListPage({super.key});
+
+  @override
+  State<LauncherListPage> createState() => _LauncherListpage();
+}
+
+class _LauncherListpage extends State<LauncherListPage> {
+  var loading = true;
+  List<Launcher> launchers = [
     Launcher(
       name: 'Falcon 9',
       manufacturer: 'SpaceX',
@@ -24,8 +35,6 @@ class LauncherListPage extends StatelessWidget {
       lastLaunch: 'February 20, 2025',
     ),
   ];
-
-  LauncherListPage({super.key});
 
   Widget status_chip(BuildContext context, String status) {
     final statusColors = {
@@ -209,13 +218,20 @@ class LauncherListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        if (isDesktopLayout(context)) {
-          return _buildWideLayout(context);
-        } else {
-          return _buildNarrowLayout(context);
-        }
+    var pbc = getIt<PocketbaseController>();
+
+    return waitFor(
+      waiting_for: () => pbc.get_rocket_list(),
+      executed: (data) {
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            if (isDesktopLayout(context)) {
+              return _buildWideLayout(context);
+            } else {
+              return _buildNarrowLayout(context);
+            }
+          },
+        );
       },
     );
   }
