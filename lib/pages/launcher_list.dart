@@ -1,27 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:skywalker/components/colored_chip.dart';
+import 'package:skywalker/server/launcher.dart';
 import 'package:skywalker/utils.dart';
 
 class LauncherListPage extends StatelessWidget {
-  final List<Map<String, dynamic>> launchers = [
-    {
-      'name': 'Falcon 9',
-      'manufacturer': 'SpaceX',
-      'status': 'Available',
-      'lastLaunch': 'March 10, 2025',
-    },
-    {
-      'name': 'Electron',
-      'manufacturer': 'Rocket Lab',
-      'status': 'Busy',
-      'lastLaunch': 'March 5, 2025',
-    },
-    {
-      'name': 'New Shepard',
-      'manufacturer': 'Blue Origin',
-      'status': 'Offline',
-      'lastLaunch': 'February 20, 2025',
-    },
+  final List<Launcher> launchers = [
+    Launcher(
+      name: 'Falcon 9',
+      manufacturer: 'SpaceX',
+      status: 'Available',
+      lastLaunch: 'March 10, 2025',
+    ),
+    Launcher(
+      name: 'Electron',
+      manufacturer: 'Rocket Lab',
+      status: 'Busy',
+      lastLaunch: 'March 5, 2025',
+    ),
+    Launcher(
+      name: 'New Shepard',
+      manufacturer: 'Blue Origin',
+      status: 'Offline',
+      lastLaunch: 'February 20, 2025',
+    ),
   ];
 
   LauncherListPage({super.key});
@@ -82,13 +83,13 @@ class LauncherListPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            launcher['name'],
+                            launcher.name,
                             style: Theme.of(context).textTheme.headlineSmall
                                 ?.copyWith(fontWeight: FontWeight.bold),
                           ),
 
                           // Status chip
-                          status_chip(context, launcher['status']),
+                          status_chip(context, launcher.status),
                         ],
                       ),
                       const SizedBox(height: 16),
@@ -103,7 +104,7 @@ class LauncherListPage extends StatelessWidget {
                           ),
                           Expanded(
                             child: Text(
-                              launcher['manufacturer'],
+                              launcher.manufacturer,
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ),
@@ -120,7 +121,7 @@ class LauncherListPage extends StatelessWidget {
                           ),
                           Expanded(
                             child: Text(
-                              launcher['lastLaunch'],
+                              launcher.lastLaunch,
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ),
@@ -131,7 +132,7 @@ class LauncherListPage extends StatelessWidget {
                 ),
               ],
             ),
-            if (launcher['status'] == 'Available')
+            if (launcher.status == 'Available')
               Align(
                 alignment: Alignment.bottomRight,
                 child: Padding(

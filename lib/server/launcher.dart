@@ -1,11 +1,11 @@
-class Rocket {
+class Launcher {
   String id = "";
   String name = "";
   String manufacturer = "";
   String lastLaunch = "";
   String status = "";
 
-  Rocket({
+  Launcher({
     this.id = "",
     this.name = "",
     this.manufacturer = "",
@@ -13,8 +13,8 @@ class Rocket {
     this.status = "",
   });
 
-  factory Rocket.fromJson(Map<String, dynamic> json) {
-    return Rocket(
+  factory Launcher.fromJson(Map<String, dynamic> json) {
+    return Launcher(
       id: json['id'] ?? "",
       name: json['name'] ?? "",
       status: json['status'] ?? "",
