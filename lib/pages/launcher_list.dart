@@ -185,16 +185,15 @@ class _LauncherListpage extends State<LauncherListPage> {
             },
           ),
         ),
-        const SizedBox(height: 8), // Add spacing between PageView and indicator
         SmoothPageIndicator(
           controller: _pageController, // Bind the PageController
           count: launchers.length,
           effect: ExpandingDotsEffect(
             activeDotColor: Theme.of(context).colorScheme.primary,
             dotColor: Theme.of(context).colorScheme.onSurface.withAlpha(70),
-            dotHeight: 8,
-            dotWidth: 8,
-            spacing: 8,
+            dotHeight: 10,
+            dotWidth: 10,
+            spacing: 10,
           ),
         ),
       ],
