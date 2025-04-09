@@ -6,6 +6,7 @@ import 'package:skywalker/server/launcher.dart';
 import 'package:skywalker/server/pocketbase_controller.dart';
 import 'package:skywalker/services.dart';
 import 'package:skywalker/utils.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class LauncherListPage extends StatefulWidget {
   const LauncherListPage({super.key});
@@ -17,6 +18,9 @@ class LauncherListPage extends StatefulWidget {
 class _LauncherListpage extends State<LauncherListPage> {
   var loading = true;
   List<Launcher> launchers = [];
+  final PageController _pageController = PageController(
+    viewportFraction: 0.9,
+  ); // Add PageController
 
   Widget status_chip(BuildContext context, String status) {
     final statusColors = {
@@ -174,13 +178,23 @@ class _LauncherListpage extends State<LauncherListPage> {
         SizedBox(
           height: 450, // Adjust height for the carousel
           child: PageView.builder(
-            controller: PageController(
-              viewportFraction: 0.9,
-            ), // Perspective effect
+            controller: _pageController, // Use the PageController
             itemCount: launchers.length,
             itemBuilder: (context, index) {
               return launcher_elt(context, index);
             },
+          ),
+        ),
+        const SizedBox(height: 8), // Add spacing between PageView and indicator
+        SmoothPageIndicator(
+          controller: _pageController, // Bind the PageController
+          count: launchers.length,
+          effect: ExpandingDotsEffect(
+            activeDotColor: Theme.of(context).colorScheme.primary,
+            dotColor: Theme.of(context).colorScheme.onSurface.withAlpha(70),
+            dotHeight: 8,
+            dotWidth: 8,
+            spacing: 8,
           ),
         ),
       ],
