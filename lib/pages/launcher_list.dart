@@ -5,9 +5,11 @@ import 'package:skywalker/components/waiting_component.dart';
 import 'package:skywalker/pages/login_page.dart';
 import 'package:skywalker/server/models/launcher.dart';
 import 'package:skywalker/server/pocketbase_controller.dart';
+import 'package:skywalker/server/providers/launcher_list_provider.dart';
 import 'package:skywalker/services.dart';
 import 'package:skywalker/utils.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:provider/provider.dart';
 
 class LauncherListPage extends StatefulWidget {
   const LauncherListPage({super.key});
@@ -18,7 +20,6 @@ class LauncherListPage extends StatefulWidget {
 
 class _LauncherListpage extends State<LauncherListPage> {
   var loading = true;
-  List<Launcher> launchers = [];
   final PageController _pageController = PageController(
     viewportFraction: 0.9,
   ); // Add PageController
@@ -53,8 +54,7 @@ class _LauncherListpage extends State<LauncherListPage> {
     );
   }
 
-  Widget launcher_elt(BuildContext context, int index) {
-    final launcher = launchers[index];
+  Widget launcher_elt(BuildContext context, final Launcher launcher) {
     return Transform.scale(
       scale: 0.9, // Slight scaling for perspective
       child: Card(
@@ -146,7 +146,7 @@ class _LauncherListpage extends State<LauncherListPage> {
     );
   }
 
-  Widget _buildWideLayout(BuildContext context) {
+  Widget _buildWideLayout(BuildContext context, List<Launcher> launchers) {
     return SizedBox(
       height: 450,
       child: Row(
@@ -161,7 +161,7 @@ class _LauncherListpage extends State<LauncherListPage> {
                 return SizedBox(
                   height: 450,
                   width: 450,
-                  child: launcher_elt(context, index),
+                  child: launcher_elt(context, launchers[index]),
                 );
               },
               itemCount: launchers.length,
@@ -172,7 +172,7 @@ class _LauncherListpage extends State<LauncherListPage> {
     );
   }
 
-  Widget _buildNarrowLayout(BuildContext context) {
+  Widget _buildNarrowLayout(BuildContext context, List<Launcher> launchers) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -182,7 +182,7 @@ class _LauncherListpage extends State<LauncherListPage> {
             controller: _pageController, // Use the PageController
             itemCount: launchers.length,
             itemBuilder: (context, index) {
-              return launcher_elt(context, index);
+              return launcher_elt(context, launchers[index]);
             },
           ),
         ),
@@ -235,23 +235,36 @@ class _LauncherListpage extends State<LauncherListPage> {
         ),
       );
     }
-    return waitFor(
-      waiting_for: () => pbc.getLauncherList(),
-
-      executed: (data) {
-        setState(() {
-          launchers = data;
-        });
-        return LayoutBuilder(
-          builder: (context, constraints) {
-            if (isDesktopLayout(context)) {
-              return _buildWideLayout(context);
-            } else {
-              return _buildNarrowLayout(context);
-            }
-          },
-        );
-      },
+    return ChangeNotifierProvider<LauncherListProvider>(
+      create: (context) => LauncherListProvider(),
+      child: Consumer<LauncherListProvider>(
+        builder: (context, provider, child) {
+          if (provider.ready == false) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          final launchers = provider.launchers;
+          if (launchers.isEmpty) {
+            return Center(
+              child: Text(
+                "No launchers available.",
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+            );
+          }
+          return Scaffold(
+            appBar: AppBar(title: const Text("Available Launchers")),
+            body: LayoutBuilder(
+              builder: (context, constraints) {
+                if (isDesktopLayout(context)) {
+                  return _buildWideLayout(context, launchers);
+                } else {
+                  return _buildNarrowLayout(context, launchers);
+                }
+              },
+            ),
+          );
+        },
+      ),
     );
   }
 }

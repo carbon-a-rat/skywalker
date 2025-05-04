@@ -15,9 +15,13 @@ class LauncherListController {
   // Callback to notify the provider
   Map<String, Function> onLaunchersUpdatedCallbacks = {};
 
+  bool ready = false;
+
   LauncherListController() {
     fetchLaunchers().then((_) {
       subscribeToUpdates();
+      ready = true;
+      onLaunchersUpdated();
     });
   }
 
@@ -118,7 +122,7 @@ class LauncherListController {
         launchers.removeWhere((launcher) => launcher.id == event.record!.id);
         onLaunchersUpdated(); // Notify the provider
       }
-    });
+    }, expand: toExpand);
 
     // Subscribe to updates for the launches collection to track last launch changes
     pb.collection(launchesCollection).subscribe('*', (event) async {

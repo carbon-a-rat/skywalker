@@ -13,10 +13,12 @@ class LauncherListProvider extends ChangeNotifier {
     controller.registerUpdateCallback(key, () {
       notifyListeners();
     });
+    notifyListeners();
   }
 
   // Getter for the list of launchers
   List<Launcher> get launchers => controller.launchers;
+  bool get ready => controller.ready;
 
   // Fetch the list of launchers manually (if needed)
   Future<void> fetchLaunchers() async {
