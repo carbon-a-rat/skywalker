@@ -1,7 +1,7 @@
 import "dart:io";
 
 import "package:pocketbase/pocketbase.dart";
-import "package:skywalker/server/launcher.dart";
+import "package:skywalker/server/models/launcher.dart";
 
 // const pb_url = "http://pocketbase.io";
 const pb_url = "http://localhost:8090";
@@ -60,9 +60,9 @@ class PocketbaseController {
     return response;
   }
 
-  Future<List<Launcher>?>? get_rocket_list() async {
-    final records = await pb.collection('rockets').getFullList();
-    if (records != null) {
+  Future<List<Launcher>?>? getLauncherList() async {
+    final records = await pb.collection('launchers').getFullList();
+    if (records.isNotEmpty) {
       return records
           .map((record) => Launcher.fromJson(record.toJson()))
           .toList();

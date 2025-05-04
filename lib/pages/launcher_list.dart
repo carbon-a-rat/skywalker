@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:skywalker/components/colored_chip.dart';
 import 'package:skywalker/components/pad.dart';
 import 'package:skywalker/components/waiting_component.dart';
-import 'package:skywalker/server/launcher.dart';
+import 'package:skywalker/server/models/launcher.dart';
 import 'package:skywalker/server/pocketbase_controller.dart';
 import 'package:skywalker/services.dart';
 import 'package:skywalker/utils.dart';
@@ -205,7 +205,7 @@ class _LauncherListpage extends State<LauncherListPage> {
     var pbc = getIt<PocketbaseController>();
 
     return waitFor(
-      waiting_for: () => pbc.get_rocket_list(),
+      waiting_for: () => pbc.getLauncherList(),
       executed: (data) {
         launchers = data;
         return LayoutBuilder(
