@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skywalker/pages/launcher_list.dart';
 import 'package:skywalker/pages/data_visualization.dart';
+import 'package:skywalker/pages/login_page.dart';
 import 'package:skywalker/pages/settings.dart';
 import 'package:skywalker/server/pocketbase_controller.dart';
 import 'package:skywalker/services.dart';
@@ -52,6 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     // Define a shared list of navigation items
 
+    var pbc = getIt<PocketbaseController>();
     var page =
         <Widget>[
           LauncherListPage(), // 0
@@ -59,6 +61,33 @@ class _MyHomePageState extends State<MyHomePage> {
           SettingsPage(), // 2
         ][selectedIndex];
 
+    if (pbc.logged_in == false) {
+      return Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text("Not logged in"),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginPage(title: "Login"),
+                    ),
+                  ).then((value) {
+                    setState(() {
+                      selectedIndex = 0;
+                    });
+                  });
+                },
+                child: const Text("Login"),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
     return LayoutBuilder(
       builder: (context, constraints) {
         if (isDesktopLayout(context)) {
