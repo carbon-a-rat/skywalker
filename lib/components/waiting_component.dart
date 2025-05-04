@@ -8,6 +8,15 @@ FutureBuilder waitFor<T>({executed, waiting_for, placeholder}) {
       if (context == null) {
         return Text("Loading...");
       }
+      if (snapshot.hasError) {
+        print(snapshot.hasError);
+        return Center(
+          child: Text(
+            "Error: ${snapshot.error}",
+            style: TextStyle(color: Colors.red),
+          ),
+        );
+      }
       if (snapshot.hasData) {
         if (snapshot.data != 0) {
           T data = snapshot.data!;
