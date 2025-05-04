@@ -61,33 +61,6 @@ class _MyHomePageState extends State<MyHomePage> {
           SettingsPage(), // 2
         ][selectedIndex];
 
-    if (pbc.loggedIn == false) {
-      return Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("Not logged in"),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LoginPage(title: "Login"),
-                    ),
-                  ).then((value) {
-                    setState(() {
-                      selectedIndex = 0;
-                    });
-                  });
-                },
-                child: const Text("Login"),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
     return LayoutBuilder(
       builder: (context, constraints) {
         if (isDesktopLayout(context)) {

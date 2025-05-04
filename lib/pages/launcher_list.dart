@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:skywalker/components/colored_chip.dart';
 import 'package:skywalker/components/pad.dart';
 import 'package:skywalker/components/waiting_component.dart';
+import 'package:skywalker/pages/login_page.dart';
 import 'package:skywalker/server/models/launcher.dart';
 import 'package:skywalker/server/pocketbase_controller.dart';
 import 'package:skywalker/services.dart';
@@ -204,6 +205,36 @@ class _LauncherListpage extends State<LauncherListPage> {
   Widget build(BuildContext context) {
     var pbc = getIt<PocketbaseController>();
 
+    if (pbc.loggedIn == false) {
+      return Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.lock,
+                size: 80,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              padbig(Text("Please login to access the launchers.")),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginPage(title: "Login"),
+                    ),
+                  ).then((value) {
+                    setState(() {});
+                  });
+                },
+                child: const Text("Login"),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
     return waitFor(
       waiting_for: () => pbc.getLauncherList(),
 
