@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:skywalker/server/models/launcher.dart';
@@ -13,6 +15,9 @@ class LauncherController {
   final String launchesCollection = 'launches';
 
   Launcher? launcher;
+
+  bool controlled = false;
+  Timer? timer;
 
   // Callback to notify the provider
   Function onLauncherUpdated = () {};
@@ -100,5 +105,38 @@ class LauncherController {
         }
       }
     }
+  }
+
+  Future<void> controlPing([Timer? t]) async {
+    if (launcher != null) {
+      pb
+          .collection(launcherCollection)
+          .update(
+            launcher!.id,
+            body: {
+              'current_user': pb.authStore.record!.id,
+              'last_user_ping_at': DateTime.now().toIso8601String(),
+            },
+          );
+    }
+  }
+
+  void takeControl() {
+    controlPing();
+    timer = Timer.periodic(const Duration(seconds: 5), controlPing);
+    controlled = true;
+  }
+
+  void releaseControl() {
+    timer?.cancel();
+    timer = null;
+    controlled = false;
+  }
+
+  void dispose() {
+    timer?.cancel();
+    timer = null;
+    pb.collection(launcherCollection).unsubscribe(launcherId);
+    pb.collection(launchesCollection).unsubscribe('launcher = "$launcherId"');
   }
 }
