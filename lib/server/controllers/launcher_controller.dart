@@ -18,14 +18,14 @@ class LauncherController {
 
   LauncherController(this.pb, this.launcherId, this.onLauncherUpdated) {
     launcher = null;
-    getLauncher().then((value) {
-      if (value != null) {
+    fetchLauncher().then((value) {
+      if (value != false) {
         subscribeToUpdates();
       }
     });
   }
 
-  Future<Launcher?> getLauncher() async {
+  Future<bool> fetchLauncher() async {
     try {
       final record = await pb
           .collection(launcherCollection)
@@ -52,13 +52,14 @@ class LauncherController {
           pb.authStore.record!.id,
         );
         onLauncherUpdated(); // Notify the provider
+        return true;
       }
     } catch (e) {
       if (kDebugMode) {
         debugPrint('Error fetching launcher: $e');
       }
     }
-    return null;
+    return false;
   }
 
   void subscribeToUpdates() {
