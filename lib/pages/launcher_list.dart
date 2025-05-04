@@ -105,12 +105,12 @@ class _LauncherListpage extends State<LauncherListPage> {
 
                       launcher_description(
                         'Manufacturer: ',
-                        launcher.manufacturer,
+                        launcher.manufacturerName,
                       ),
 
                       launcher_description(
                         'Last Launch: ',
-                        launcher.lastLaunch,
+                        launcher.lastLaunchAt.toString(),
                       ),
                     ],
                   ),
@@ -206,8 +206,11 @@ class _LauncherListpage extends State<LauncherListPage> {
 
     return waitFor(
       waiting_for: () => pbc.getLauncherList(),
+
       executed: (data) {
-        launchers = data;
+        setState(() {
+          launchers = data;
+        });
         return LayoutBuilder(
           builder: (context, constraints) {
             if (isDesktopLayout(context)) {
