@@ -13,6 +13,7 @@ Future setupServiceLocators() async {
 
   getIt.registerSingletonAsync<PocketBase>(
     () async => getIt<PocketbaseController>().pb,
+    dependsOn: [PocketbaseController],
   );
 
   //  getIt.registerSingletonWithDependencies<ListRequestCacher>(
