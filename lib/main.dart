@@ -61,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
           SettingsPage(), // 2
         ][selectedIndex];
 
-    if (pbc.logged_in == false) {
+    if (pbc.loggedIn == false) {
       return Scaffold(
         body: Center(
           child: Column(

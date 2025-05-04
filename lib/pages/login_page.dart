@@ -126,7 +126,7 @@ class _LoginPage extends State<LoginPage> {
                   },
                 ),
               ),
-              (pbc.logged_in)
+              (pbc.loggedIn)
                   ? Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 8,
