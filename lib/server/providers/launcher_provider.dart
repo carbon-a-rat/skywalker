@@ -9,7 +9,7 @@ class LauncherProvider extends ChangeNotifier {
 
   LauncherProvider(String launcherId) {
     // Pass a callback to the controller to notify the provider
-    controller = LauncherController(getIt<PocketBase>(), launcherId, () {
+    controller = LauncherController(launcherId, () {
       notifyListeners();
     });
   }

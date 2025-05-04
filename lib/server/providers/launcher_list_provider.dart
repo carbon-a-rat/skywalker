@@ -9,7 +9,7 @@ class LauncherListProvider extends ChangeNotifier {
 
   LauncherListProvider() {
     // Initialize the controller and pass a callback to notify the provider
-    controller = LauncherListController(getIt<PocketBase>(), () {
+    controller = LauncherListController(() {
       notifyListeners();
     });
   }

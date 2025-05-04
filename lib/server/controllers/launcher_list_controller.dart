@@ -1,9 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:skywalker/server/models/launcher.dart';
+import 'package:skywalker/services.dart';
 
 class LauncherListController {
-  final PocketBase pb;
+  final PocketBase pb = getIt<PocketBase>();
   final String launcherCollection = 'launchers';
   final String launchesCollection = 'launches';
   final String toExpand =
@@ -14,7 +15,7 @@ class LauncherListController {
   // Callback to notify the provider
   Function onLaunchersUpdated = () {};
 
-  LauncherListController(this.pb, this.onLaunchersUpdated) {
+  LauncherListController(this.onLaunchersUpdated) {
     fetchLaunchers().then((_) {
       subscribeToUpdates();
     });
