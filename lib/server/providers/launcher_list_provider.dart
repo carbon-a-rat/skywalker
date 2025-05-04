@@ -5,9 +5,12 @@ import 'package:skywalker/server/models/launcher.dart';
 class LauncherListProvider extends ChangeNotifier {
   late final LauncherListController controller;
 
+  final String key = UniqueKey().toString();
+
   LauncherListProvider() {
     // Initialize the controller and pass a callback to notify the provider
-    controller = LauncherListController(() {
+    controller = launcherListController;
+    controller.registerUpdateCallback(key, () {
       notifyListeners();
     });
   }
@@ -19,5 +22,12 @@ class LauncherListProvider extends ChangeNotifier {
   Future<void> fetchLaunchers() async {
     await controller.fetchLaunchers();
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    // Unregister the callback when the provider is disposed
+    controller.unregisterUpdateCallback(key);
+    super.dispose();
   }
 }

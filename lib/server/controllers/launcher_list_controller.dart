@@ -13,12 +13,26 @@ class LauncherListController {
   List<Launcher> launchers = [];
 
   // Callback to notify the provider
-  Function onLaunchersUpdated = () {};
+  Map<String, Function> onLaunchersUpdatedCallbacks = {};
 
-  LauncherListController(this.onLaunchersUpdated) {
+  LauncherListController() {
     fetchLaunchers().then((_) {
       subscribeToUpdates();
     });
+  }
+
+  void onLaunchersUpdated() {
+    for (var callback in onLaunchersUpdatedCallbacks.values) {
+      callback();
+    }
+  }
+
+  void registerUpdateCallback(String key, Function callback) {
+    onLaunchersUpdatedCallbacks[key] = callback;
+  }
+
+  void unregisterUpdateCallback(String key) {
+    onLaunchersUpdatedCallbacks.remove(key);
   }
 
   // Fetch the list of launchers, including the last launch property
@@ -126,3 +140,5 @@ class LauncherListController {
     }, fields: "fired_at,launcher");
   }
 }
+
+final LauncherListController launcherListController = LauncherListController();
