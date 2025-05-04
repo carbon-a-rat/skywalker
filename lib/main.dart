@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skywalker/pages/account.dart';
 import 'package:skywalker/pages/launcher_list.dart';
 import 'package:skywalker/pages/data_visualization.dart';
 import 'package:skywalker/pages/login_page.dart';
@@ -47,6 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
     NavigationItem(icon: Icons.rocket_launch, label: 'Launchers'),
     NavigationItem(icon: Icons.data_thresholding, label: 'Data Analysis'),
     NavigationItem(icon: Icons.settings, label: 'Settings'),
+    NavigationItem(icon: Icons.account_circle, label: 'Account'),
   ];
 
   @override
@@ -59,6 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
           LauncherListPage(), // 0
           DataVisualizationPage(), // 1
           SettingsPage(), // 2
+          AccountPage(),
         ][selectedIndex];
 
     return LayoutBuilder(
@@ -108,6 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   selectedIndex = value;
                 });
               },
+
               items:
                   navigationItems
                       .map(
