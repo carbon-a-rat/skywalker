@@ -1,22 +1,21 @@
-import "dart:io";
-
 import "package:pocketbase/pocketbase.dart";
-import "package:skywalker/server/models/launcher.dart";
 
 // const pb_url = "http://pocketbase.io";
-const pb_url = "http://localhost:8090";
-PocketBase pb = new PocketBase(pb_url);
+const pbUrl = "http://localhost:8090";
+final PocketBase _pb = PocketBase(pbUrl);
 
 class PocketbaseController {
   var loaded = false;
-  var logged_in = false;
+  var loggedIn = false;
+
+  PocketBase get pb => _pb;
 
   Future<HealthCheck?> status() async {
     return await pb.health.check();
   }
 
   Future<bool?> logout() async {
-    logged_in = false;
+    loggedIn = false;
     pb.authStore.clear(); // clear auth data
     return true;
   }
@@ -33,8 +32,8 @@ class PocketbaseController {
   Future<RecordModel?> login(String email, String password) async {
     var res = await pb.collection('users').authWithPassword(email, password);
 
-    if (res != null) {
-      logged_in = true;
+    if (pb.authStore.isValid) {
+      loggedIn = true;
     }
     return res.record;
   }
@@ -56,17 +55,7 @@ class PocketbaseController {
           },
         );
 
-    logged_in = false;
+    loggedIn = false;
     return response;
-  }
-
-  Future<List<Launcher>?>? getLauncherList() async {
-    final records = await pb.collection('launchers').getFullList();
-    if (records.isNotEmpty) {
-      return records
-          .map((record) => Launcher.fromJson(record.toJson()))
-          .toList();
-    }
-    return null;
   }
 }
