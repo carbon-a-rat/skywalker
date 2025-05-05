@@ -69,10 +69,14 @@ class LauncherController {
   }
 
   void subscribeToUpdates() {
-    pb
-        .collection(launcherCollection)
-        .subscribe(launcherId, onUpdate, expand: toExpand);
+    subscribeToLauncherUpdates();
+    subscribeToLastLaunchUpdate();
+    subscribeToManufacturerUpdates();
+    subscribeToUserUpdates();
+    subscribeToRocketUpdates();
+  }
 
+  void subscribeToLastLaunchUpdate() {
     pb
         .collection(launchesCollection)
         .subscribe(
@@ -80,6 +84,66 @@ class LauncherController {
           fields: "fired_at",
           onLastLaunchUpdate,
         );
+  }
+
+  void subscribeToLauncherUpdates() {
+    pb
+        .collection(launcherCollection)
+        .subscribe(launcherId, onUpdate, expand: toExpand);
+  }
+
+  void subscribeToManufacturerUpdates() {
+    pb.collection('manufacturers').subscribe('*', (event) async {
+      if (event.action == "update" && event.record != null) {
+        // Update the manufacturer name in the launcher
+        final manufacturerId = event.record!.id;
+        final manufacturerName = event.record!.data['name'];
+        if (launcher != null && launcher!.manufacturerId == manufacturerId) {
+          launcher!.updateManufacturer(manufacturerId, manufacturerName);
+          onLauncherUpdated(); // Notify the provider
+        }
+      }
+    });
+  }
+
+  void subscribeToUserUpdates() {
+    pb.collection('users').subscribe('*', (event) async {
+      if (event.action == "update" && event.record != null) {
+        // Update the user name in the launcher
+        final userId = event.record!.id;
+        final userName = event.record!.data['name'];
+        if (launcher != null) {
+          if (launcher!.ownerId == userId) {
+            launcher!.updateOwner(userId, userName);
+          }
+          if (launcher!.allowedUsersIds.contains(userId)) {
+            launcher!.updateAllowedUser(userId, userName);
+          }
+          onLauncherUpdated(); // Notify the provider
+        }
+      } else if (event.action == "delete" && event.record != null) {
+        // Remove the user from the allowed users in the launcher
+        final userId = event.record!.id;
+        if (launcher != null && launcher!.allowedUsersIds.contains(userId)) {
+          launcher!.removeAllowedUser(userId);
+          onLauncherUpdated(); // Notify the provider
+        }
+      }
+    }, fields: 'id,name');
+  }
+
+  void subscribeToRocketUpdates() {
+    pb.collection('rockets').subscribe('*', (event) async {
+      if (event.action == "update" && event.record != null) {
+        // Update the rocket name in the launcher
+        final rocketId = event.record!.id;
+        final rocketName = event.record!.data['name'];
+        if (launcher != null && launcher!.loadedRocketsIds.contains(rocketId)) {
+          launcher!.updateLoadedRocket(rocketId, rocketName);
+          onLauncherUpdated(); // Notify the provider
+        }
+      }
+    }, fields: 'id,name');
   }
 
   Future<void> onUpdate(RecordSubscriptionEvent event) async {

@@ -145,6 +145,57 @@ class Launcher {
     this.lastLaunchAt = DateTime.parse(lastLaunchAt);
   }
 
+  void updateOwner(String ownerId, String ownerName) {
+    this.ownerId = ownerId;
+    this.ownerName = ownerName;
+  }
+
+  void updateManufacturer(String manufacturerId, String manufacturerName) {
+    this.manufacturerId = manufacturerId;
+    this.manufacturerName = manufacturerName;
+  }
+
+  void updateCurrentUser(String currentUserId, String currentUserName) {
+    this.currentUserId = currentUserId;
+    this.currentUserName = currentUserName;
+  }
+
+  void updateAllowedUser(String userId, String userName) {
+    if (!allowedUsersIds.contains(userId)) {
+      allowedUsersIds.add(userId);
+      allowedUsersNames.add(userName);
+    } else {
+      int index = allowedUsersIds.indexOf(userId);
+      allowedUsersNames[index] = userName;
+    }
+  }
+
+  void removeAllowedUser(String userId) {
+    if (allowedUsersIds.contains(userId)) {
+      int index = allowedUsersIds.indexOf(userId);
+      allowedUsersIds.removeAt(index);
+      allowedUsersNames.removeAt(index);
+    }
+  }
+
+  void updateLoadedRocket(String rocketId, String rocketName) {
+    if (!loadedRocketsIds.contains(rocketId)) {
+      loadedRocketsIds.add(rocketId);
+      loadedRocketsNames.add(rocketName);
+    } else {
+      int index = loadedRocketsIds.indexOf(rocketId);
+      loadedRocketsNames[index] = rocketName;
+    }
+  }
+
+  void removeLoadedRocket(String rocketId) {
+    if (loadedRocketsIds.contains(rocketId)) {
+      int index = loadedRocketsIds.indexOf(rocketId);
+      loadedRocketsIds.removeAt(index);
+      loadedRocketsNames.removeAt(index);
+    }
+  }
+
   factory Launcher.fromJson(
     Map<String, dynamic> json,
     String lastLaunchAt,
