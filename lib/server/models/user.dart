@@ -1,3 +1,3 @@
-class AppUser {
+class User {
   // User collection fields
 }
