@@ -63,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     var pbc = getIt<PocketbaseController>();
     var page =
-        <Widget>[
+        [
           LauncherListPage(), // 0
           DataVisualizationPage(), // 1
           AccountPage(),
@@ -114,8 +114,6 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 SafeArea(
                   child: NavigationRail(
-                    extended: false,
-
                     destinations:
                         navigationItems
                             .map(
