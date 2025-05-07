@@ -32,39 +32,34 @@ class LauncherController {
   }
 
   Future<bool> fetchLauncher() async {
-    try {
-      final record = await pb
-          .collection(launcherCollection)
-          .getOne(launcherId, expand: toExpand);
-      final lastLaunchAt = await pb
-          .collection(launchesCollection)
-          .getList(
-            page: 1,
-            perPage: 1,
-            filter: 'launcher = "$launcherId"',
-            sort: '-fired_at',
-          )
-          .then((res) {
-            if (res.items.isNotEmpty) {
-              return res.items.first.data['fired_at'];
-            }
-            return null;
-          });
+    final record = await pb
+        .collection(launcherCollection)
+        .getOne(launcherId, expand: toExpand);
+    final lastLaunchAt = await pb
+        .collection(launchesCollection)
+        .getList(
+          page: 1,
+          perPage: 1,
+          filter: 'launcher = "$launcherId"',
+          sort: '-fired_at',
+        )
+        .then((res) {
+          if (res.items.isNotEmpty) {
+            return res.items.first.data['fired_at'];
+          }
+          return "";
+        });
 
-      if (record.data.isNotEmpty) {
-        launcher = Launcher.fromJson(
-          record.toJson(),
-          lastLaunchAt,
-          pb.authStore.record!.id,
-        );
-        onLauncherUpdated(); // Notify the provider
-        return true;
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        debugPrint('Error fetching launcher: $e');
-      }
+    if (record.data.isNotEmpty) {
+      launcher = Launcher.fromJson(
+        record.toJson(),
+        lastLaunchAt,
+        pb.authStore.record!.id,
+      );
+      onLauncherUpdated(); // Notify the provider
+      return true;
     }
+
     return false;
   }
 
