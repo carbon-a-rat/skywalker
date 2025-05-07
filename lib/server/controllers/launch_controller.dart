@@ -107,4 +107,50 @@ class LaunchController {
   void dispose(String launchId) {
     pb.collection(launchCollection).unsubscribe(launchId);
   }
+
+  void sendCommand(String command) async {
+    if (launch != null) {
+      switch (command) {
+        case "load":
+          try {
+            await pb
+                .collection(launchCollection)
+                .update(launch!.id, body: {"should_load": true});
+          } catch (e) {
+            if (kDebugMode) {
+              debugPrint('Error sending load command: $e');
+            }
+          }
+          break;
+        case "fire":
+          if (launch!.loadedAt != null) {
+            try {
+              await pb
+                  .collection(launchCollection)
+                  .update(launch!.id, body: {"should_fire": true});
+            } catch (e) {
+              if (kDebugMode) {
+                debugPrint('Error sending fire command: $e');
+              }
+            }
+          } else {
+            throw Exception("Rocket not loaded");
+          }
+          break;
+        case "cancel":
+          try {
+            await pb
+                .collection(launchCollection)
+                .update(launch!.id, body: {"should_cancel": true});
+          } catch (e) {
+            if (kDebugMode) {
+              debugPrint('Error sending cancel command: $e');
+            }
+          }
+          break;
+        default:
+          throw Exception("Unknown command");
+      }
+    }
+  }
 }
