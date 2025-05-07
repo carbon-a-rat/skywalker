@@ -95,6 +95,16 @@ class Launch {
     updated = DateTime.parse(json['updated'] as String);
   }
 
+  void updateRocket(String id, String name) {
+    rocketId = id;
+    rocketName = name;
+  }
+
+  void updateLauncher(String id, String name) {
+    launcherId = id;
+    launcherName = name;
+  }
+
   factory Launch.fromJson(Map<String, dynamic> json) {
     return Launch(
       id: json['id'] as String,
