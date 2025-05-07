@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:skywalker/components/pad.dart';
 import 'package:skywalker/pages/account.dart';
 import 'package:skywalker/pages/launcher_list.dart';
 import 'package:skywalker/pages/data_visualization.dart';
 import 'package:skywalker/pages/login_page.dart';
-import 'package:skywalker/pages/settings.dart';
 import 'package:skywalker/server/pocketbase_controller.dart';
 import 'package:skywalker/services.dart';
 import 'package:skywalker/utils.dart';
@@ -28,8 +28,15 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
+        // dark mode
         useMaterial3: true,
       ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        /* dark theme settings */
+      ),
+
+      themeMode: ThemeMode.dark,
       home: const MyHomePage(),
     );
   }
@@ -47,7 +54,6 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<NavigationItem> navigationItems = [
     NavigationItem(icon: Icons.rocket_launch, label: 'Launchers'),
     NavigationItem(icon: Icons.data_thresholding, label: 'Data Analysis'),
-    NavigationItem(icon: Icons.settings, label: 'Settings'),
     NavigationItem(icon: Icons.account_circle, label: 'Account'),
   ];
 
@@ -60,7 +66,6 @@ class _MyHomePageState extends State<MyHomePage> {
         <Widget>[
           LauncherListPage(), // 0
           DataVisualizationPage(), // 1
-          SettingsPage(), // 2
           AccountPage(),
         ][selectedIndex];
 
@@ -105,8 +110,10 @@ class _MyHomePageState extends State<MyHomePage> {
             body: Container(child: page),
 
             bottomNavigationBar: BottomNavigationBar(
-              currentIndex: selectedIndex,
+              elevation: 10,
+              backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
 
+              currentIndex: selectedIndex,
               onTap: (value) {
                 setState(() {
                   selectedIndex = value;
@@ -114,7 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               selectedItemColor: Theme.of(context).colorScheme.primary,
               unselectedItemColor: Theme.of(context).colorScheme.onSurface,
-              showUnselectedLabels: true,
+              showUnselectedLabels: false,
               showSelectedLabels: true,
               type: BottomNavigationBarType.fixed,
               items:
