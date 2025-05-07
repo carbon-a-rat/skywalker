@@ -37,7 +37,7 @@ class _ColoredChipButton extends State<ColoredChipButton> {
       child: Text(
         widget.name,
         style: TextStyle(
-          color: widget.highlighted ? Colors.white : Colors.black,
+          color: Theme.of(context).textTheme.bodyLarge?.color,
           fontSize: 14,
           fontWeight: FontWeight.w500,
           fontFamily: 'Poppins',
