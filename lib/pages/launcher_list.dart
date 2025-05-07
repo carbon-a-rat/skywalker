@@ -203,38 +203,6 @@ class _LauncherListpage extends State<LauncherListPage> {
 
   @override
   Widget build(BuildContext context) {
-    var pbc = getIt<PocketbaseController>();
-
-    if (pbc.loggedIn == false) {
-      return Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.lock,
-                size: 80,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              padbig(Text("Please login to access the launchers.")),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LoginPage(title: "Login"),
-                    ),
-                  ).then((value) {
-                    setState(() {});
-                  });
-                },
-                child: const Text("Login"),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
     return ChangeNotifierProvider<LauncherListProvider>(
       create: (context) => LauncherListProvider(),
       child: Consumer<LauncherListProvider>(

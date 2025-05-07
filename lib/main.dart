@@ -69,6 +69,42 @@ class _MyHomePageState extends State<MyHomePage> {
           AccountPage(),
         ][selectedIndex];
 
+    if (pbc.loggedIn == false) {
+      return Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.rocket_launch,
+                size: 80,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              padbig(
+                Text(
+                  "Sky Walker",
+                  style: Theme.of(context).textTheme.headlineLarge,
+                ),
+              ),
+              padbig(Text("Please login to access the app")),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginPage(title: "Login"),
+                    ),
+                  ).then((value) {
+                    setState(() {});
+                  });
+                },
+                child: const Text("Access account"),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
     return LayoutBuilder(
       builder: (context, constraints) {
         if (isDesktopLayout(context)) {
