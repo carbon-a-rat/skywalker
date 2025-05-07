@@ -103,6 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // Use BottomNavigationBar for narrower screens
           return Scaffold(
             body: Container(child: page),
+
             bottomNavigationBar: BottomNavigationBar(
               currentIndex: selectedIndex,
 
@@ -111,7 +112,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   selectedIndex = value;
                 });
               },
-
+              selectedItemColor: Theme.of(context).colorScheme.primary,
+              unselectedItemColor: Theme.of(context).colorScheme.onSurface,
+              showUnselectedLabels: true,
+              showSelectedLabels: true,
+              type: BottomNavigationBarType.fixed,
               items:
                   navigationItems
                       .map(
