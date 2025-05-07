@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:skywalker/components/colored_chip.dart';
 import 'package:skywalker/components/pad.dart';
 import 'package:skywalker/components/waiting_component.dart';
+import 'package:skywalker/pages/launcher_control.dart';
 import 'package:skywalker/pages/login_page.dart';
 import 'package:skywalker/server/models/launcher.dart';
 import 'package:skywalker/server/pocketbase_controller.dart';
@@ -118,13 +119,23 @@ class _LauncherListpage extends State<LauncherListPage> {
                 ),
               ],
             ),
-            if (launcher.status == 'Available')
+            if ( /*launcher.online*/ true)
               padbig(
                 Align(
                   alignment: Alignment.bottomRight,
                   child: ElevatedButton(
                     onPressed: () {
                       // Handle connect action
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (context) =>
+                                  LauncherControlPage(launcherId: launcher.id),
+                        ),
+                      ).then((value) {
+                        setState(() {});
+                      });
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).colorScheme.primary,
