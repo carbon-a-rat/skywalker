@@ -11,12 +11,14 @@ class LaunchListController {
   final String rocketsCollection = 'rockets';
   final String launchersCollection = 'launchers';
 
+  final String toExpand = 'rocket,launcher';
+
   List<Launch> launches = [];
 
   // Callback to notify the provider
-  Function onLaunchesUpdated = () {};
+  Map<String, Function> onLaunchesUpdatedCallbacks = {};
 
-  LaunchListController(this.onLaunchesUpdated) {
+  LaunchListController() {
     fetchLaunches().then((value) {
       if (value) {
         subscribeToUpdates();
@@ -24,9 +26,25 @@ class LaunchListController {
     });
   }
 
+  void onLaunchesUpdated() {
+    for (var callback in onLaunchesUpdatedCallbacks.values) {
+      callback();
+    }
+  }
+
+  void registerUpdateCallback(String key, Function callback) {
+    onLaunchesUpdatedCallbacks[key] = callback;
+  }
+
+  void unregisterUpdateCallback(String key) {
+    onLaunchesUpdatedCallbacks.remove(key);
+  }
+
   Future<bool> fetchLaunches() async {
     try {
-      final records = await pb.collection(launchesCollection).getFullList();
+      final records = await pb
+          .collection(launchesCollection)
+          .getFullList(expand: toExpand);
       launches =
           records.map((record) => Launch.fromJson(record.toJson())).toList();
       onLaunchesUpdated(); // Notify the provider
