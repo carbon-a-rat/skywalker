@@ -25,11 +25,13 @@ class _LauncherListpage extends State<LauncherListPage> {
     viewportFraction: 0.9,
   ); // Add PageController
 
-  Widget status_chip(BuildContext context, String status) {
+  Widget statusChip(BuildContext context, String status) {
     final statusColors = {
-      'Available': Colors.green.shade400,
-      'Busy': Colors.yellow.shade400,
-      'Offline': Colors.red.shade400,
+      'available': Colors.green.shade400,
+      'busy': Colors.yellow.shade400,
+      'offline': Colors.red.shade400,
+      'unauthorized': Colors.red.shade400,
+      'connected': Colors.blue.shade400,
     };
     return ColoredChipButton(
       name: status,
@@ -38,7 +40,7 @@ class _LauncherListpage extends State<LauncherListPage> {
     );
   }
 
-  Widget launcher_description(String title, String value) {
+  Widget launcherDescription(String title, String value) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -55,7 +57,7 @@ class _LauncherListpage extends State<LauncherListPage> {
     );
   }
 
-  Widget launcher_elt(BuildContext context, final Launcher launcher) {
+  Widget launcherElt(BuildContext context, final Launcher launcher) {
     return Transform.scale(
       scale: 0.9, // Slight scaling for perspective
       child: Card(
@@ -100,17 +102,17 @@ class _LauncherListpage extends State<LauncherListPage> {
                             ),
 
                             // Status chip
-                            status_chip(context, launcher.status),
+                            statusChip(context, launcher.status),
                           ],
                         ),
                       ),
 
-                      launcher_description(
+                      launcherDescription(
                         'Manufacturer: ',
                         launcher.manufacturerName,
                       ),
 
-                      launcher_description(
+                      launcherDescription(
                         'Last Launch: ',
                         launcher.lastLaunchAt.toString(),
                       ),
@@ -172,7 +174,7 @@ class _LauncherListpage extends State<LauncherListPage> {
                 return SizedBox(
                   height: 450,
                   width: 450,
-                  child: launcher_elt(context, launchers[index]),
+                  child: launcherElt(context, launchers[index]),
                 );
               },
               itemCount: launchers.length,
@@ -193,7 +195,7 @@ class _LauncherListpage extends State<LauncherListPage> {
             controller: _pageController, // Use the PageController
             itemCount: launchers.length,
             itemBuilder: (context, index) {
-              return launcher_elt(context, launchers[index]);
+              return launcherElt(context, launchers[index]);
             },
           ),
         ),
