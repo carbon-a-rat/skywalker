@@ -1,40 +1,27 @@
-class User {
+class Manufacturer {
   String id;
   String name;
-  String email;
-
   DateTime created;
   DateTime updated;
 
-  void updatefromJson(dynamic json) {
-    id = json['id'] as String;
-    name = json['name'] as String;
-    email = json['email'] as String;
-    created = DateTime.parse(json['created'] as String);
-    updated = DateTime.parse(json['updated'] as String);
-  }
-
-  User({
+  Manufacturer({
     required this.id,
     required this.name,
-    required this.email,
     required this.created,
     required this.updated,
   });
 
-  void updateFromJson(Map<String, dynamic> json) {
+  void updatefromJson(dynamic json) {
     id = json['id'] as String;
     name = json['name'] as String;
-    email = json['email'] as String;
     created = DateTime.parse(json['created'] as String);
     updated = DateTime.parse(json['updated'] as String);
   }
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
+  factory Manufacturer.fromJson(Map<String, dynamic> json) {
+    return Manufacturer(
       id: json['id'] as String,
       name: json['name'] as String,
-      email: json['email'] as String,
       created: DateTime.parse(json['created'] as String),
       updated: DateTime.parse(json['updated'] as String),
     );
