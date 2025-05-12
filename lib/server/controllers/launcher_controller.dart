@@ -21,6 +21,8 @@ class LauncherController {
   // Callback to notify the provider
   Function onLauncherUpdated = () {};
 
+  List<Function> unsubscribeFunctions = [];
+
   LauncherController(this.launcherId, this.onLauncherUpdated) {
     launcher = null;
     fetchLauncher().then((value) {
@@ -62,6 +64,13 @@ class LauncherController {
     return false;
   }
 
+  void unsubscribe() {
+    for (var func in unsubscribeFunctions) {
+      func();
+    }
+    unsubscribeFunctions.clear();
+  }
+
   void subscribeToUpdates() {
     subscribeToLauncherUpdates();
     subscribeToLastLaunchUpdate();
@@ -70,24 +79,28 @@ class LauncherController {
     subscribeToRocketUpdates();
   }
 
-  void subscribeToLastLaunchUpdate() {
-    pb
+  Future<void> subscribeToLastLaunchUpdate() async {
+    var func = await pb
         .collection(launchesCollection)
         .subscribe(
           'launcher = "$launcherId"',
           fields: "fired_at",
           onLastLaunchUpdate,
         );
+    unsubscribeFunctions.add(func);
   }
 
-  void subscribeToLauncherUpdates() {
-    pb
+  Future<void> subscribeToLauncherUpdates() async {
+    var func = await pb
         .collection(launcherCollection)
         .subscribe(launcherId, onUpdate, expand: toExpand);
+    unsubscribeFunctions.add(func);
   }
 
-  void subscribeToManufacturerUpdates() {
-    pb.collection('manufacturers').subscribe('*', (event) async {
+  Future<void> subscribeToManufacturerUpdates() async {
+    var func = await pb.collection('manufacturers').subscribe('*', (
+      event,
+    ) async {
       if (event.action == "update" && event.record != null) {
         // Update the manufacturer name in the launcher
         final manufacturerId = event.record!.id;
@@ -98,10 +111,11 @@ class LauncherController {
         }
       }
     });
+    unsubscribeFunctions.add(func);
   }
 
-  void subscribeToUserUpdates() {
-    pb.collection('users').subscribe('*', (event) async {
+  Future<void> subscribeToUserUpdates() async {
+    var func = await pb.collection('users').subscribe('*', (event) async {
       if (event.action == "update" && event.record != null) {
         // Update the user name in the launcher
         final userId = event.record!.id;
@@ -124,10 +138,11 @@ class LauncherController {
         }
       }
     }, fields: 'id,name');
+    unsubscribeFunctions.add(func);
   }
 
-  void subscribeToRocketUpdates() {
-    pb.collection('rockets').subscribe('*', (event) async {
+  Future<void> subscribeToRocketUpdates() async {
+    var func = await pb.collection('rockets').subscribe('*', (event) async {
       if (event.action == "update" && event.record != null) {
         // Update the rocket name in the launcher
         final rocketId = event.record!.id;
@@ -138,6 +153,7 @@ class LauncherController {
         }
       }
     }, fields: 'id,name');
+    unsubscribeFunctions.add(func);
   }
 
   Future<void> onUpdate(RecordSubscriptionEvent event) async {
@@ -194,7 +210,6 @@ class LauncherController {
   void dispose() {
     timer?.cancel();
     timer = null;
-    pb.collection(launcherCollection).unsubscribe(launcherId);
-    pb.collection(launchesCollection).unsubscribe('launcher = "$launcherId"');
+    unsubscribe();
   }
 }

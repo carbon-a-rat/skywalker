@@ -14,6 +14,8 @@ class UserController {
   // Callback to notify the provider
   Function onUserUpdated = () {};
 
+  List<Function> unsubscribeFunctions = [];
+
   UserController(String userId, this.onUserUpdated) {
     fetchUser(userId).then((value) {
       if (value != false) {
@@ -38,8 +40,16 @@ class UserController {
     return false;
   }
 
-  void subscribeToUpdates(String userId) {
-    pb.collection(userCollection).subscribe(userId, onUpdate);
+  void unsubscribe() {
+    for (var func in unsubscribeFunctions) {
+      func();
+    }
+    unsubscribeFunctions.clear();
+  }
+
+  Future<void> subscribeToUpdates(String userId) async {
+    var func = await pb.collection(userCollection).subscribe(userId, onUpdate);
+    unsubscribeFunctions.add(func);
   }
 
   Future<void> onUpdate(RecordSubscriptionEvent event) async {
@@ -57,6 +67,6 @@ class UserController {
   }
 
   void dispose(String userId) {
-    pb.collection(userCollection).unsubscribe(userId);
+    unsubscribe();
   }
 }

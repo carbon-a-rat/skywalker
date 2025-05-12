@@ -15,6 +15,7 @@ class LaunchController {
 
   // Callback to notify the provider
   Function onLaunchUpdated = () {};
+  List<Function> unsubscribeFunctions = [];
 
   LaunchController(String launchId, this.onLaunchUpdated) {
     fetchLaunch(launchId).then((value) {
@@ -46,8 +47,9 @@ class LaunchController {
     subscribeToRocketUpdates();
   }
 
-  void subscribeToLaunchUpdates(String launchId) {
-    pb.collection(launchCollection).subscribe(launchId, onUpdate);
+  Future<void> subscribeToLaunchUpdates(String launchId) async {
+    var func = pb.collection(launchCollection).subscribe(launchId, onUpdate);
+    unsubscribeFunctions.add(await func);
   }
 
   Future<void> onUpdate(RecordSubscriptionEvent event) async {
@@ -64,10 +66,11 @@ class LaunchController {
     }
   }
 
-  void subscribeToLaunchersUpdates() {
-    pb
+  Future<void> subscribeToLaunchersUpdates() async {
+    var func = pb
         .collection(launchersCollection)
         .subscribe(launch!.launcherId, onLaunchersUpdate, fields: "name");
+    unsubscribeFunctions.add(await func);
   }
 
   void onLaunchersUpdate(RecordSubscriptionEvent event) async {
@@ -84,10 +87,11 @@ class LaunchController {
     }
   }
 
-  void subscribeToRocketUpdates() {
-    pb
+  Future<void> subscribeToRocketUpdates() async {
+    var func = pb
         .collection(rocketsCollection)
         .subscribe(launch!.rocketId, onRocketUpdate, fields: "name");
+    unsubscribeFunctions.add(await func);
   }
 
   void onRocketUpdate(RecordSubscriptionEvent event) async {
@@ -104,8 +108,15 @@ class LaunchController {
     }
   }
 
+  void unsubscribe() {
+    for (var func in unsubscribeFunctions) {
+      func();
+    }
+    unsubscribeFunctions.clear();
+  }
+
   void dispose(String launchId) {
-    pb.collection(launchCollection).unsubscribe(launchId);
+    unsubscribe();
   }
 
   void sendCommand(String command) async {
