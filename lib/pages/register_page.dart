@@ -1,13 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:skywalker/pages/login_page.dart';
 import 'package:skywalker/server/pocketbase_controller.dart';
 import '../services.dart';
-import '../utils.dart';
 import '../components/pad.dart';
-import '../server/pocketbase_controller.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key, required this.title});

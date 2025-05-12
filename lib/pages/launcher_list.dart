@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:skywalker/components/colored_chip.dart';
 import 'package:skywalker/components/pad.dart';
-import 'package:skywalker/components/waiting_component.dart';
 import 'package:skywalker/pages/launcher_control.dart';
-import 'package:skywalker/pages/login_page.dart';
 import 'package:skywalker/server/models/launcher.dart';
-import 'package:skywalker/server/pocketbase_controller.dart';
 import 'package:skywalker/server/providers/launcher_list_provider.dart';
-import 'package:skywalker/services.dart';
 import 'package:skywalker/utils.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:provider/provider.dart';
