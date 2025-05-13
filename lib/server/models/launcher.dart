@@ -27,6 +27,9 @@ class Launcher {
   List<String> loadedRocketsIds;
   List<String> loadedRocketsNames;
 
+  bool rocketConnected;
+  num rocketBatteryLevel;
+
   DateTime? lastLaunchAt;
 
   // Other fields
@@ -52,6 +55,8 @@ class Launcher {
     required this.allowedUsersNames,
     required this.loadedRocketsIds,
     required this.loadedRocketsNames,
+    required this.rocketConnected,
+    required this.rocketBatteryLevel,
     required this.lastLaunchAt,
     required this.appUserId,
   }) {
@@ -128,6 +133,8 @@ class Launcher {
                 json['expand']['loaded_rockets'],
               ).map((dynamic rocket) => rocket['name'] as String).toList()
               : [];
+      rocketConnected = json['rocket_connected'] as bool;
+      rocketBatteryLevel = json['rocket_battery_level'] as num;
       lastLaunchAt =
           json['last_launch_at'] != ''
               ? DateTime.parse(json['last_launch_at'] as String)
@@ -252,6 +259,8 @@ class Launcher {
                 json['expand']['loaded_rockets'],
               ).map((dynamic rocket) => rocket['name'] as String).toList()
               : [],
+      rocketConnected: json['rocket_connected'] as bool,
+      rocketBatteryLevel: json['rocket_battery_level'] as num,
       lastLaunchAt: lastLaunchAt != '' ? DateTime.parse(lastLaunchAt) : null,
       appUserId: appUserId,
     );
