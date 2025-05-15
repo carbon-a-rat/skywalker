@@ -26,11 +26,32 @@ class _LauncherControlPageState extends State<LauncherControlPage> {
             // Placeholder
             appBar: AppBar(title: const Text('Launcher Control')),
             body: Center(
-              child: Row(
-                children: [
-                  Text('Launcher Control Page'),
-                  Text('Launcher: ${launchers!.codename}'),
-                ],
+              child: Card.outlined(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Icon(
+                        Icons.rocket_launch,
+                        size: 64,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+
+                      Text(
+                        'Launcher: ${launchers!.name}',
+
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                      Text(
+                        'Status: ${launchers.status}',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                  ),
+                ),
               ),
             ),
           );
