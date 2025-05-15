@@ -3,7 +3,7 @@ import 'package:skywalker/components/filter_visualization.dart';
 import 'package:skywalker/components/launch_select.dart';
 
 class DataVisualizationPage extends StatefulWidget {
-  const DataVisualizationPage({Key? key});
+  const DataVisualizationPage({super.key});
 
   @override
   State<DataVisualizationPage> createState() => _DataVisualizationPageState();

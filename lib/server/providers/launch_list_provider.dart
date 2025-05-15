@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skywalker/server/controllers/launch_list_controller.dart';
-import 'package:skywalker/server/controllers/launcher_list_controller.dart';
 import 'package:skywalker/server/models/launch.dart';
-import 'package:skywalker/server/models/launcher.dart';
 
 class LaunchListProvider extends ChangeNotifier {
   late final LaunchListController controller;

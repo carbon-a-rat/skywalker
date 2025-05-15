@@ -4,8 +4,9 @@ import 'package:skywalker/server/providers/launch_list_provider.dart';
 import 'package:skywalker/server/providers/launcher_list_provider.dart';
 import 'package:skywalker/server/providers/launcher_provider.dart';
 
+// FIXME: rework everything, this is just barebone code to get it working
 class LaunchSelect extends StatefulWidget {
-  const LaunchSelect({Key? key}) : super(key: key);
+  const LaunchSelect({super.key});
 
   @override
   _LaunchSelectState createState() => _LaunchSelectState();
@@ -19,12 +20,21 @@ class _LaunchSelectState extends State<LaunchSelect> {
       create: (context) => LaunchListProvider(),
       child: Consumer<LaunchListProvider>(
         builder: (context, provider, child) {
+          if (!provider.ready) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
           if (provider.launchers.isEmpty) {
             return const Center(child: CircularProgressIndicator());
           }
           final launchers = provider.launchers;
 
+          if (launchers.isEmpty) {
+            return const Center(child: Text('No launchers available'));
+          }
+
           return ListView.builder(
+            shrinkWrap: true,
             itemCount: launchers.length,
             itemBuilder: (context, index) {
               final launcher = launchers[index];
@@ -43,10 +53,22 @@ class _LaunchSelectState extends State<LaunchSelect> {
                             ) => ChangeNotifierProvider<LauncherProvider>(
                               create:
                                   (context) => LauncherProvider(launcher.id),
-                              child: Text(
-                                'Launcher: ${launcher.launcherName}\nRocket: ${launcher.rocketName}',
-                                style:
-                                    Theme.of(context).textTheme.headlineSmall,
+                              child: Column(
+                                children: [
+                                  Text(
+                                    'Launcher: ${launcher.launcherName}\nRocket: ${launcher.rocketName}',
+                                    style:
+                                        Theme.of(
+                                          context,
+                                        ).textTheme.headlineSmall,
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text('Back'),
+                                  ),
+                                ],
                               ),
                             ),
                       ),
