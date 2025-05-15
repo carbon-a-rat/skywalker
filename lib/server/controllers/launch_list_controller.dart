@@ -12,7 +12,7 @@ class LaunchListController {
   final String launchersCollection = 'launchers';
 
   final String toExpand = 'rocket,launcher';
-
+  bool ready = false;
   List<Launch> launches = [];
 
   // Callback to notify the provider
@@ -24,6 +24,7 @@ class LaunchListController {
     fetchLaunches().then((value) {
       if (value) {
         subscribeToUpdates();
+        ready = true;
       }
     });
   }
@@ -143,3 +144,5 @@ class LaunchListController {
     unsubscribe();
   }
 }
+
+final launchListController = LaunchListController();
