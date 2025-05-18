@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
+import 'package:skywalker/components/sizing.dart';
 import 'package:skywalker/pages/register_page.dart';
 import '../components/pad.dart';
 import '../services.dart';
@@ -64,163 +65,166 @@ class _LoginPage extends State<LoginPage> {
       appBar: AppBar(title: Text(widget.title)),
       body: Form(
         key: _formKey,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              (server_status != "")
-                  ? Text(
-                    (server_status),
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
-                  : Container(),
-              (widget.afterRegister)
-                  ? Text(
-                    "You're account has successfully been registered. Please login.",
-                  )
-                  : Text("Please login."),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 16,
-                ),
-                child: TextFormField(
-                  controller: emailController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Email",
-                    icon: Icon(Icons.email),
+        child: padbig(
+          maxWProseCentered(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                (server_status != "")
+                    ? Text(
+                      (server_status),
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                    : Container(),
+                (widget.afterRegister)
+                    ? Text(
+                      "You're account has successfully been registered. Please login.",
+                    )
+                    : Text("Please login."),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 16,
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 16,
-                ),
-                child: TextFormField(
-                  controller: passwordController,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Password",
-                    icon: Icon(Icons.lock),
+                  child: TextFormField(
+                    controller: emailController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Email",
+                      icon: Icon(Icons.email),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      return null;
+                    },
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your password';
-                    }
-                    return null;
-                  },
                 ),
-              ),
-              (pbc.loggedIn)
-                  ? Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 16.0,
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 16,
+                  ),
+                  child: TextFormField(
+                    controller: passwordController,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Password",
+                      icon: Icon(Icons.lock),
                     ),
-                    child: Center(
-                      child: Text("Logged in as " + pbc.current_user()!.email),
-                    ),
-                  )
-                  : (Container()),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 16.0,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your password';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
-                child: Center(
-                  child: Column(
-                    children: [
-                      pad(
-                        ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              var res = pbc
-                                  .login(
-                                    emailController.text,
-                                    passwordController.text,
-                                  )
-                                  .then((value) {
-                                    Navigator.pop(context);
-                                  })
-                                  .catchError((e) {
-                                    try {
-                                      ScaffoldMessenger.of(
-                                        context,
-                                      ).showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                            'Login failed: ' +
-                                                e.response["message"],
-                                          ),
-                                        ),
-                                      );
-                                    } catch (e) {
-                                      ScaffoldMessenger.of(
-                                        context,
-                                      ).showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                            'Login failed: ' + e.toString(),
-                                          ),
-                                        ),
-                                      );
-                                    }
-                                  });
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Please fill input'),
-                                ),
-                              );
-                            }
-                          },
-                          child: const Text('Login'),
+                (pbc.loggedIn)
+                    ? Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 16.0,
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Logged in as " + pbc.current_user()!.email,
                         ),
                       ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          pad(
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder:
-                                        (context) =>
-                                            RegisterPage(title: "Register"),
+                    )
+                    : (Container()),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 16.0,
+                  ),
+                  child: Center(
+                    child: Column(
+                      children: [
+                        pad(
+                          ElevatedButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                var res = pbc
+                                    .login(
+                                      emailController.text,
+                                      passwordController.text,
+                                    )
+                                    .then((value) {
+                                      Navigator.pop(context);
+                                    })
+                                    .catchError((e) {
+                                      try {
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              'Login failed: ' +
+                                                  e.response["message"],
+                                            ),
+                                          ),
+                                        );
+                                      } catch (e) {
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              'Login failed: ' + e.toString(),
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    });
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Please fill input'),
                                   ),
                                 );
-                              },
-                              child: const Text('Register'),
-                            ),
+                              }
+                            },
+                            child: const Text('Login'),
                           ),
-                          pad(
-                            TextButton(
-                              onPressed: () {},
-                              child: const Text('Forgot password?'),
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            pad(
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder:
+                                          (context) =>
+                                              RegisterPage(title: "Register"),
+                                    ),
+                                  );
+                                },
+                                child: const Text('Register'),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                            pad(
+                              TextButton(
+                                onPressed: () {},
+                                child: const Text('Forgot password?'),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
