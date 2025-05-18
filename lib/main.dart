@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skywalker/components/pad.dart';
+import 'package:skywalker/components/sizing.dart';
 import 'package:skywalker/pages/account.dart';
 import 'package:skywalker/pages/launcher_list.dart';
 import 'package:skywalker/pages/data_visualization.dart';
@@ -71,36 +72,58 @@ class _MyHomePageState extends State<MyHomePage> {
 
     if (pbc.loggedIn == false) {
       return Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.rocket_launch,
-                size: 80,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              padbig(
-                Text(
-                  "Sky Walker",
-                  style: Theme.of(context).textTheme.headlineLarge,
-                ),
-              ),
-              padbig(Text("Please login to access the app")),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
+        body: maxWProseCentered(
+          Container(
+            // box shadow
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Theme.of(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => const LoginPage(title: "Login"),
+                  ).colorScheme.primary.withValues(alpha: 0.5),
+                  spreadRadius: 20,
+                  blurRadius: 200,
+                  offset: const Offset(0, 0), // changes position of shadow
+                ),
+              ],
+            ),
+            child: padbig(
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.rocket_launch,
+                    size: 80,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  padsmall(
+                    Text(
+                      "Sky Walker",
+                      style: Theme.of(context).textTheme.headlineLarge,
                     ),
-                  ).then((value) {
-                    setState(() {});
-                  });
-                },
-                child: const Text("Access account"),
+                  ),
+                  padsmall(Text("Please login to access the app")),
+                  padtopbig(
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (context) => const LoginPage(title: "Login"),
+                          ),
+                        ).then((value) {
+                          setState(() {});
+                        });
+                      },
+                      child: const Text("connect"),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       );

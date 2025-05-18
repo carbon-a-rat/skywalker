@@ -68,6 +68,7 @@ class _LoginPage extends State<LoginPage> {
         child: padbig(
           maxWProseCentered(
             Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 (server_status != "")

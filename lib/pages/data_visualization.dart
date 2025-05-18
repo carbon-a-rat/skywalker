@@ -32,10 +32,15 @@ class _DataVisualizationPageState extends State<DataVisualizationPage> {
       body: padbig(
         maxWProseCentered(
           Card(
-            elevation: 8,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
+            surfaceTintColor: Theme.of(context).colorScheme.primary,
+            color: Theme.of(context).colorScheme.surface,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            shadowColor: Theme.of(context).colorScheme.primary.withAlpha(100),
+            elevation: 0.5,
+            child: padbig(
+              Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -56,7 +61,18 @@ class _DataVisualizationPageState extends State<DataVisualizationPage> {
                     'Latest launcher data:',
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
-                  LaunchSelect(),
+                  padtopbig(
+                    Card.filled(
+                      color: Theme.of(context).colorScheme.surface,
+                      surfaceTintColor: Theme.of(context).colorScheme.primary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      elevation: 4,
+
+                      child: LaunchSelect(),
+                    ),
+                  ),
                 ],
               ),
             ),

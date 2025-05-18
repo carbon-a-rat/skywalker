@@ -57,3 +57,10 @@ Widget padxsmall(Widget child) {
     child: child,
   );
 }
+
+Widget padtopbig(Widget child) {
+  return Padding(
+    padding: const EdgeInsets.only(top: pad_big_val),
+    child: child,
+  );
+}
