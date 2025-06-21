@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:skywalker/components/launch_settings.dart';
+import 'package:skywalker/components/pad.dart';
 import 'package:skywalker/server/providers/launcher_provider.dart';
 
 class LauncherControlPage extends StatefulWidget {
@@ -27,16 +29,17 @@ class _LauncherControlPageState extends State<LauncherControlPage> {
             appBar: AppBar(title: const Text('Launcher Control')),
             body: Center(
               child: Card.outlined(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
+                child: padbig(
+                  Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Icon(
-                        Icons.rocket_launch,
-                        size: 64,
-                        color: Theme.of(context).colorScheme.primary,
+                      padbig(
+                        Icon(
+                          Icons.rocket_launch,
+                          size: 64,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                       ),
 
                       Text(
@@ -47,6 +50,14 @@ class _LauncherControlPageState extends State<LauncherControlPage> {
                       Text(
                         'Status: ${launchers.status}',
                         style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+
+                      padtopbig(
+                        FilledButton.icon(
+                          onPressed: () => {showLaunchSettings(context)},
+                          label: const Text('Launch'),
+                          icon: const Icon(Icons.play_arrow),
+                        ),
                       ),
                       const SizedBox(height: 16),
                     ],
