@@ -14,6 +14,7 @@ void main() async {
   await setupServiceLocators();
 
   await getIt.allReady();
+  await getIt<PocketbaseController>().init();
 
   runApp(const MyApp());
 }

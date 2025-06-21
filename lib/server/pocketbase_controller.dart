@@ -1,5 +1,9 @@
+import "dart:convert";
+
+import "package:flutter_secure_storage/flutter_secure_storage.dart";
 import "package:pocketbase/pocketbase.dart";
 import "package:skywalker/server/models/launcher.dart";
+import "package:skywalker/services.dart";
 
 // const pb_url = "http://pocketbase.io";
 const pbUrl = "https://deathstar.cyp.sh/";
@@ -35,7 +39,7 @@ class User {
 class PocketbaseController {
   var loaded = false;
   var loggedIn = false;
-
+  var secureStorage = getIt<FlutterSecureStorage>();
   PocketBase get pb => _pb;
 
   Future<HealthCheck?> status() async {
@@ -43,15 +47,51 @@ class PocketbaseController {
   }
 
   Future<bool?> logout() async {
+    await secureStorage.delete(key: "pb_auth_token");
     loggedIn = false;
     pb.authStore.clear(); // clear auth data
     return true;
+  }
+
+  Future<String?> loadLoginTokens() async {
+    // Load the authentication token from secure storage
+    try {
+      var stored = await secureStorage.read(key: "pb_auth_token");
+      if (stored == null) {
+        return stored;
+      }
+
+      var storedTok = jsonDecode(stored);
+
+      var token = storedTok['token'] as String;
+      var record = RecordModel.fromJson(
+        storedTok['record'] as Map<String, dynamic>,
+      );
+
+      pb.authStore.save(token, record);
+
+      await pb.collection('users').authRefresh();
+      loggedIn = pb.authStore.isValid;
+
+      return pb.authStore.token;
+    } catch (e) {
+      return null;
+    }
   }
 
   Future init() async {
     if (loaded) {
       return;
     }
+
+    await loadLoginTokens();
+
+    if (pb.authStore.isValid) {
+      loggedIn = true;
+    } else {
+      loggedIn = false;
+    }
+
     // code ici pour gérer dans le future le stockage des clés d'authentification en local afin
     // de ne pas devoir à chaque fois les retaper
     loaded = true;
@@ -63,6 +103,15 @@ class PocketbaseController {
     if (pb.authStore.isValid) {
       loggedIn = true;
     }
+
+    secureStorage.write(
+      key: "pb_auth_token",
+      value: jsonEncode({
+        'token': pb.authStore.token,
+        'record': pb.authStore.model.toJson(),
+      }),
+    );
+
     return res.record;
   }
 

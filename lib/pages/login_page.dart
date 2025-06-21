@@ -39,7 +39,10 @@ class _LoginPage extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     var pbc = getIt<PocketbaseController>();
-
+    if (pbc.loggedIn) {
+      // If already logged in, redirect to home page
+      Navigator.pop(context);
+    }
     pbc
         .status()
         .then((value) {

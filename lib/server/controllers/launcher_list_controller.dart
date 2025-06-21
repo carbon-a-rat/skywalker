@@ -54,6 +54,8 @@ class LauncherListController {
       launchers = await Future.wait(
         records.map((record) async {
           final lastLaunchAt = await _fetchLastLaunch(record.id);
+          print("record.toJson(): ${record.toJson()}");
+
           return Launcher.fromJson(
             record.toJson(),
             lastLaunchAt,
@@ -148,6 +150,7 @@ class LauncherListController {
       } else if (event.action == "update" && event.record != null) {
         // Update an existing launcher
         final lastLaunchAt = await _fetchLastLaunch(event.record!.id);
+
         final updatedLauncher = Launcher.fromJson(
           event.record!.toJson(),
           lastLaunchAt,
