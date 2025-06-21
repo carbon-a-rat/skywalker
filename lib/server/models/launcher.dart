@@ -238,26 +238,36 @@ class Launcher {
       allowedUsersIds:
           json['allowed_users'].isNotEmpty
               ? List<String>.from(
-                json['expand']['allowed_users'],
-              ).map((dynamic user) => user['id'] as String).toList()
+                json['expand']['allowed_users'].map((dynamic val) {
+                  print(val);
+                  return (val['id'].toString());
+                }).toList(),
+              )
               : [],
       allowedUsersNames:
           json['allowed_users'].isNotEmpty
               ? List<String>.from(
-                json['expand']['allowed_users'],
-              ).map((dynamic user) => user['name'] as String).toList()
+                (json['expand']['allowed_users']).map((dynamic val) {
+                  print(val);
+                  return (val['name'].toString());
+                }).toList(),
+              )
               : [],
       loadedRocketsIds:
           json['loaded_rockets'].isNotEmpty
               ? List<String>.from(
-                json['expand']['loaded_rockets'],
-              ).map((dynamic rocket) => rocket['id'] as String).toList()
+                (json['expand']['loaded_rockets'])
+                    .map((dynamic rocket) => rocket['id'] as String)
+                    .toList(),
+              )
               : [],
       loadedRocketsNames:
           json['loaded_rockets'].isNotEmpty
               ? List<String>.from(
-                json['expand']['loaded_rockets'],
-              ).map((dynamic rocket) => rocket['name'] as String).toList()
+                (json['expand']['loaded_rockets'])
+                    .map((dynamic rocket) => rocket['name'] as String)
+                    .toList(),
+              )
               : [],
       rocketConnected: json['rocket_connected'] as bool,
       rocketBatteryLevel: json['rocket_battery_level'] as num,
