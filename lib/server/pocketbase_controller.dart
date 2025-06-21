@@ -2,7 +2,7 @@ import "package:pocketbase/pocketbase.dart";
 import "package:skywalker/server/models/launcher.dart";
 
 // const pb_url = "http://pocketbase.io";
-const pbUrl = "http://localhost:8090";
+const pbUrl = "https://deathstar.cyp.sh/";
 final PocketBase _pb = PocketBase(pbUrl);
 
 class User {
