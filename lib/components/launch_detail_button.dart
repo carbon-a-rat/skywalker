@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skywalker/components/pad.dart';
+import 'package:skywalker/pages/launch_details.dart';
 import 'package:skywalker/server/models/launch.dart';
 
 class LaunchDetail extends StatelessWidget {
@@ -23,7 +24,18 @@ class LaunchDetail extends StatelessWidget {
                 subtitle: Text(launch.created.toString()),
               ),
             ),
-            IconButton(icon: const Icon(Icons.arrow_forward), onPressed: () {}),
+            IconButton(
+              icon: const Icon(Icons.arrow_forward),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder:
+                        (context) => LaunchDetailsPage(launchId: launch.id),
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),
