@@ -31,7 +31,7 @@ class LaunchDetail extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder:
-                        (context) => LaunchDetailsPage(launchId: launch.id),
+                        (context) => LaunchDetailsPage(launchId: launch.id!),
                   ),
                 );
               },

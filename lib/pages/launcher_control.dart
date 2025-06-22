@@ -46,9 +46,33 @@ class _LauncherControlPageState extends State<LauncherControlPage> {
 
               if (launches.isEmpty) {
                 return FilledButton.icon(
-                  onPressed: () => {showLaunchSettings(context)},
-                  label: const Text('Launch'),
-                  icon: const Icon(Icons.play_arrow),
+                  onPressed: () {
+                    showLaunchSettings(context).then((value) {
+                      if (value != null) {
+                        Launch newLaunch = Launch(
+                          rocketName: launcher.loadedRocketsNames[0],
+                          launcherName: launcher.name,
+
+                          launcherId: launcher.id,
+                          rocketId: launcher.loadedRocketsIds[0],
+                          shouldLoad: true,
+                          waterVolumicPercentage: value.waterVolume,
+                          pressure: value.pressure,
+                          flightDataRecorded: value.recordData,
+                          shouldFire: false,
+                          shouldCancel: false,
+                        );
+                        Provider.of<LaunchListProvider>(
+                          context,
+                          listen: false,
+                        ).addLaunch(newLaunch);
+                      }
+                    });
+                  },
+                  label: pady(
+                    const Text('Launch', style: TextStyle(fontSize: 16)),
+                  ),
+                  icon: const Icon(Icons.play_arrow, size: 32),
                 );
               }
 

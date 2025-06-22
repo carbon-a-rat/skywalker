@@ -25,6 +25,11 @@ class LaunchListProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void addLaunch(Launch launch) {
+    controller.addLaunch(launch);
+    notifyListeners();
+  }
+
   @override
   void dispose() {
     // Unregister the callback when the provider is disposed

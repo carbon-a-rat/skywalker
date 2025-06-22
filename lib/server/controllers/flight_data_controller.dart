@@ -53,7 +53,6 @@ class FlightDatasController {
             .toList();
     onFlightDatasUpdated(); // Notify the provider
     return true;
-    return false;
   }
 
   void subscribeToUpdates() {

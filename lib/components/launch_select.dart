@@ -52,7 +52,7 @@ class _LaunchSelectState extends State<LaunchSelect> {
                               context,
                             ) => ChangeNotifierProvider<LauncherProvider>(
                               create:
-                                  (context) => LauncherProvider(launcher.id),
+                                  (context) => LauncherProvider(launcher.id!),
                               child: Column(
                                 children: [
                                   Text(

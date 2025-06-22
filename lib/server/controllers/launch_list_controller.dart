@@ -122,6 +122,22 @@ class LaunchListController {
     }
   }
 
+  Future<void> addLaunch(Launch launch) async {
+    try {
+      final record = await pb
+          .collection(launchesCollection)
+          .create(body: launch.toJson());
+      ;
+
+      // launches.add(Launch.fromJson(record.toJson()));
+      // onLaunchesUpdated(); // Notify the provider
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('Error adding launch: $e');
+      }
+    }
+  }
+
   void dispose() {
     unsubscribe();
   }

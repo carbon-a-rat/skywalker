@@ -1,7 +1,7 @@
 import 'package:skywalker/utils.dart';
 
 class Launch {
-  String id;
+  String? id;
   String rocketId;
   String rocketName;
   String launcherId;
@@ -23,11 +23,11 @@ class Launch {
   bool shouldCancel;
   DateTime? canceledAt;
 
-  DateTime created;
-  DateTime updated;
+  DateTime? created;
+  DateTime? updated;
 
   Launch({
-    required this.id,
+    this.id,
     required this.rocketId,
     required this.rocketName,
     required this.launcherId,
@@ -36,17 +36,68 @@ class Launch {
     required this.pressure,
     required this.flightDataRecorded,
     required this.shouldLoad,
-    required this.startedWaterLoadingAt,
-    required this.startedAirLoadingAt,
-    required this.loadedAt,
+    this.startedWaterLoadingAt,
+    this.startedAirLoadingAt,
+    this.loadedAt,
     required this.shouldFire,
-    required this.firedAt,
-    required this.landedAt,
+    this.firedAt,
+    this.landedAt,
     required this.shouldCancel,
-    required this.canceledAt,
-    required this.created,
-    required this.updated,
+    this.canceledAt,
+    this.created,
+    this.updated,
   });
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = {};
+    if (id != null) {
+      json['id'] = id;
+    }
+    json['rocket'] = rocketId;
+    json['launcher'] = launcherId;
+    json['water_volumic_percentage'] = waterVolumicPercentage;
+    json['pressure'] = pressure;
+    json['flight_data_recorded'] = flightDataRecorded;
+    json['should_load'] = shouldLoad;
+
+    if (startedWaterLoadingAt != null) {
+      json['started_water_loading_at'] =
+          startedWaterLoadingAt!.toIso8601String();
+    }
+
+    if (startedAirLoadingAt != null) {
+      json['started_air_loading_at'] = startedAirLoadingAt!.toIso8601String();
+    }
+
+    if (loadedAt != null) {
+      json['loaded_at'] = loadedAt!.toIso8601String();
+    }
+
+    json['should_fire'] = shouldFire;
+    if (firedAt != null) {
+      json['fired_at'] = firedAt!.toIso8601String();
+    }
+    if (landedAt != null) {
+      json['landed_at'] = landedAt!.toIso8601String();
+    }
+    json['should_cancel'] = shouldCancel;
+    if (canceledAt != null) {
+      json['canceled_at'] = canceledAt!.toIso8601String();
+    }
+
+    if (created != null) {
+      json['created'] = created!.toIso8601String();
+    } else {
+      json['created'] = DateTime.now().toIso8601String();
+    }
+    if (updated != null) {
+      json['updated'] = updated!.toIso8601String();
+    } else {
+      json['updated'] = DateTime.now().toIso8601String();
+    }
+
+    return json;
+  }
 
   void updateFromJson(Map<String, dynamic> json) {
     id = json['id'] as String;

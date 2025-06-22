@@ -203,19 +203,6 @@ class _LaunchDetailsPage extends State<LaunchDetailsPage> {
     var pbc = getIt<PocketbaseController>();
     // generate random values points from a seed
 
-    final random = Random(42);
-    List<FlSpot> generatedRandomValues = [FlSpot(0, 0)];
-
-    for (int i = 0; i < 100; i++) {
-      generatedRandomValues.add(
-        FlSpot(
-          i.toDouble(),
-          random.nextDouble() +
-                  generatedRandomValues.lastOrNull!.y.toDouble() ??
-              0,
-        ),
-      );
-    }
     return Scaffold(
       appBar: AppBar(title: const Text('Launch Details')),
       body: ChangeNotifierProvider<LaunchProvider>(
@@ -251,7 +238,7 @@ class _LaunchDetailsPage extends State<LaunchDetailsPage> {
                         ChangeNotifierProvider<FlightDatasProvider>(
                           create:
                               (context) =>
-                                  FlightDatasProvider(provider.launches!.id),
+                                  FlightDatasProvider(provider.launches!.id!),
                           child: Consumer<FlightDatasProvider>(
                             builder: (context, flightDataProvider, child) {
                               if (!flightDataProvider.ready) {
