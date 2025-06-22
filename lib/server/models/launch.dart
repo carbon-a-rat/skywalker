@@ -1,3 +1,5 @@
+import 'package:skywalker/utils.dart';
+
 class Launch {
   String id;
   String rocketId;
@@ -48,6 +50,7 @@ class Launch {
 
   void updateFromJson(Map<String, dynamic> json) {
     id = json['id'] as String;
+    prettyPrintJson(json);
     rocketId =
         json['rocket'] != '' ? json['expand']['rocket']['id'] as String : '';
     rocketName =
