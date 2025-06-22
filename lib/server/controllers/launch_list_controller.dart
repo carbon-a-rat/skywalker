@@ -72,7 +72,9 @@ class LaunchListController {
   }
 
   Future<void> subscribeToLaunchesUpdates() async {
-    var func = await pb.collection(launchesCollection).subscribe('*', onUpdate);
+    var func = await pb
+        .collection(launchesCollection)
+        .subscribe('*', onUpdate, expand: toExpand);
     unsubscribeFunctions.add(func);
   }
 
@@ -87,6 +89,7 @@ class LaunchListController {
         final index = launches.indexWhere(
           (launch) => launch.id == event.record!.id,
         );
+
         if (index != -1) {
           launches[index].updateFromJson(event.record!.toJson());
           onLaunchesUpdated(); // Notify the provider
@@ -113,27 +116,6 @@ class LaunchListController {
         );
         if (index != -1) {
           launches[index].rocketName = event.record!.data['name'];
-          onLaunchesUpdated(); // Notify the provider
-        }
-      }
-    }
-  }
-
-  Future<void> subscribeToLauncherUpdates() async {
-    var func = await pb
-        .collection(launchersCollection)
-        .subscribe('*', onLauncherUpdate, fields: "name");
-    unsubscribeFunctions.add(func);
-  }
-
-  Future<void> onLauncherUpdate(RecordSubscriptionEvent event) async {
-    if (event.action == "update") {
-      if (event.record != null) {
-        final index = launches.indexWhere(
-          (launch) => launch.launcherId == event.record!.id,
-        );
-        if (index != -1) {
-          launches[index].launcherName = event.record!.data['name'];
           onLaunchesUpdated(); // Notify the provider
         }
       }

@@ -11,6 +11,7 @@ class LaunchController {
   final String rocketsCollection = 'rockets';
   final String launchersCollection = 'launchers';
 
+  final String toExpand = 'rocket,launcher';
   Launch? launch;
 
   // Callback to notify the provider
@@ -27,7 +28,9 @@ class LaunchController {
 
   Future<bool> fetchLaunch(String launchId) async {
     try {
-      final record = await pb.collection(launchCollection).getOne(launchId);
+      final record = await pb
+          .collection(launchCollection)
+          .getOne(launchId, expand: toExpand);
       if (record.data.isNotEmpty) {
         launch = Launch.fromJson(record.toJson());
         onLaunchUpdated(); // Notify the provider
@@ -48,7 +51,9 @@ class LaunchController {
   }
 
   Future<void> subscribeToLaunchUpdates(String launchId) async {
-    var func = pb.collection(launchCollection).subscribe(launchId, onUpdate);
+    var func = pb
+        .collection(launchCollection)
+        .subscribe(launchId, onUpdate, expand: toExpand);
     unsubscribeFunctions.add(await func);
   }
 

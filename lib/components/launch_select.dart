@@ -24,10 +24,10 @@ class _LaunchSelectState extends State<LaunchSelect> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (provider.launchers.isEmpty) {
+          if (provider.launches.isEmpty) {
             return const Center(child: CircularProgressIndicator());
           }
-          final launchers = provider.launchers;
+          final launchers = provider.launches;
 
           if (launchers.isEmpty) {
             return const Center(child: Text('No launchers available'));

@@ -17,10 +17,10 @@ class LaunchListProvider extends ChangeNotifier {
   }
 
   // Getter for the list of launchers
-  List<Launch> get launchers => controller.launches;
+  List<Launch> get launches => controller.launches;
   bool get ready => controller.ready;
   // Fetch the list of launchers manually (if needed)
-  Future<void> fetchLaunchers() async {
+  Future<void> fetchLaunches() async {
     await controller.fetchLaunches();
     notifyListeners();
   }
