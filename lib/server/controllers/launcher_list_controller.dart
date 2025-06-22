@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:skywalker/server/models/launcher.dart';
@@ -45,31 +47,29 @@ class LauncherListController {
 
   // Fetch the list of launchers, including the last launch property
   Future<void> fetchLaunchers() async {
-    try {
-      final records = await pb
-          .collection(launcherCollection)
-          .getFullList(expand: toExpand);
+    final records = await pb
+        .collection(launcherCollection)
+        .getFullList(expand: toExpand);
 
-      // Fetch the last launch for each launcher
-      launchers = await Future.wait(
-        records.map((record) async {
-          final lastLaunchAt = await _fetchLastLaunch(record.id);
-          print("record.toJson(): ${record.toJson()}");
+    // Fetch the last launch for each launcher
+    launchers = await Future.wait(
+      records.map((record) async {
+        final lastLaunchAt = await _fetchLastLaunch(record.id);
 
-          return Launcher.fromJson(
-            record.toJson(),
-            lastLaunchAt,
-            pb.authStore.record!.id,
-          );
-        }),
-      );
+        JsonEncoder encoder = new JsonEncoder.withIndent('  ');
+        String prettyprint = encoder.convert(record.toJson());
 
-      onLaunchersUpdated(); // Notify the provider
-    } catch (e) {
-      if (kDebugMode) {
-        debugPrint('Error fetching launchers: $e');
-      }
-    }
+        print("record.toJson(): ${prettyprint}");
+
+        return Launcher.fromJson(
+          record.toJson(),
+          lastLaunchAt,
+          pb.authStore.record!.id,
+        );
+      }),
+    );
+
+    onLaunchersUpdated(); // Notify the provider
   }
 
   // Fetch the last launch date for a specific launcher
