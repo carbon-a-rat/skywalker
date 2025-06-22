@@ -11,6 +11,8 @@ class Chart extends StatefulWidget {
     this.icon = Icons.show_chart,
     this.color = const Color(0xff23b6e6),
     this.color2 = const Color(0xff02d39a),
+    this.xTitle = 'X Axis',
+    this.yTitle = 'Y Axis',
   }) {
     var v = HSLColor.fromColor(color);
     color2 = v.withHue((v.hue - 40) % 360).toColor();
@@ -19,6 +21,9 @@ class Chart extends StatefulWidget {
   final String title;
   final IconData icon;
   final Color color;
+
+  final String xTitle;
+  final String yTitle;
   Color color2;
   @override
   State<Chart> createState() => _LineChartSample2State();
@@ -80,16 +85,12 @@ class _LineChartSample2State extends State<Chart> {
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            reservedSize: 30,
-            interval: 20,
+            reservedSize: 50,
+            interval: 1,
           ),
         ),
         leftTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            interval: 20,
-            reservedSize: 42,
-          ),
+          sideTitles: SideTitles(showTitles: true, reservedSize: 50),
         ),
       ),
       borderData: FlBorderData(
@@ -104,7 +105,7 @@ class _LineChartSample2State extends State<Chart> {
           gradient: LinearGradient(colors: [widget.color, widget.color2]),
           barWidth: 5,
           isStrokeCapRound: true,
-          dotData: const FlDotData(show: false),
+          dotData: const FlDotData(show: true),
           belowBarData: BarAreaData(
             show: true,
             gradient: LinearGradient(
