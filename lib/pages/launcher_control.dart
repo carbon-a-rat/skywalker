@@ -23,9 +23,13 @@ class _LauncherControlPageState extends State<LauncherControlPage> {
     Launcher launcher,
     bool showLaunched,
   ) {
-    return Card.outlined(
-      elevation: 0,
-      child: padbig(
+    return Card.filled(
+      color: Theme.of(context).colorScheme.surface,
+      surfaceTintColor: Theme.of(context).colorScheme.primary,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      elevation: 4,
+
+      child: pad(
         ChangeNotifierProvider<LaunchListProvider>(
           create: (context) => LaunchListProvider(),
           child: Consumer<LaunchListProvider>(
@@ -108,60 +112,71 @@ class _LauncherControlPageState extends State<LauncherControlPage> {
                 }
                 final launchers = provider.launcher;
 
-                return Card.outlined(
-                  elevation: 1,
-                  child: padbig(
-                    padxbig(
-                      maxWProse(
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            padbig(
-                              Icon(
-                                Icons.rocket_launch,
-                                size: 64,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
+                return maxWProseCentered(
+                  Card(
+                    surfaceTintColor: Theme.of(context).colorScheme.primary,
+                    color: Theme.of(context).colorScheme.surface,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    shadowColor: Theme.of(
+                      context,
+                    ).colorScheme.primary.withAlpha(100),
+                    elevation: 0.5,
+                    child: padbig(
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          padbig(
+                            Icon(
+                              Icons.rocket_launch,
+                              size: 64,
+                              color: Theme.of(context).colorScheme.primary,
                             ),
+                          ),
 
-                            Text(
-                              'Launcher: ${launchers!.name}',
+                          Text(
+                            'Launcher: ${launchers!.name}',
 
-                              style: Theme.of(context).textTheme.headlineSmall,
-                            ),
-                            Text(
-                              'Status: ${launchers.status}',
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                            const SizedBox(height: 16),
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ),
+                          Text(
+                            'Status: ${launchers.status}',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                          const SizedBox(height: 16),
 
-                            Text(
-                              'Launching: ',
-                              style: Theme.of(context).textTheme.titleLarge,
-                            ),
+                          Text(
+                            'Launching: ',
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
 
-                            padtopbig(
-                              showCurrentLaunch(context, launchers, false),
-                            ),
-                            const SizedBox(height: 16),
+                          padtopbig(
+                            showCurrentLaunch(context, launchers, false),
+                          ),
+                          const SizedBox(height: 16),
 
-                            Text(
-                              'Old launch: ',
-                              style: Theme.of(context).textTheme.titleLarge,
-                            ),
-                            padtopbig(
-                              showCurrentLaunch(context, launchers, true),
-                            ),
+                          Text(
+                            'Old launch: ',
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                          padtopbig(
+                            showCurrentLaunch(context, launchers, true),
+                          ),
 
-                            const SizedBox(height: 16),
-                          ],
-                        ),
+                          const SizedBox(height: 16),
+                        ],
                       ),
                     ),
                   ),
                 );
+
+                /*  return Card.outlined(
+                  elevation: 1,
+                  child: padbig(padxbig(maxWProse())),
+                );*/
               },
             ),
           ),
